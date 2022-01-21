@@ -8,11 +8,11 @@ namespace MyERP.Model
 {
     class Invoice
     {
-        int Id { get; set; }
-        string CustomerName { get; set; }
-        string CustomerAddress { get; set; }
-        double Amount { get; set; }
-        DateTime InvoiceDate { get; set; }
-        int Vat { get; set; }
+        public int Id { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerAddress { get; set; }
+        public double Amount { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public int Vat { get; set; }
     }
 }
