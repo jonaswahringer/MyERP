@@ -17,16 +17,16 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*"></RowDefinition>
+            <RowDefinition Height="0.4*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-
+        
         <TextBox Text="needs binding"></TextBox>
         <TextBox Text="needs binding"></TextBox>
         <Button Content="Press me" Command="{Binding AddCommand}"/>
 
-        <ListView HorizontalAlignment="Stretch"
+            <ListView HorizontalAlignment="Stretch"
                   ItemsSource="{Binding Path=InvoiceCTX.invoices}"
                   Grid.Row="1" Grid.Column="0" FontWeight="Normal">
             <ListView.View>
