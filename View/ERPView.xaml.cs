@@ -10,19 +10,24 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace _4_06_EF_ERP
+namespace _4_06_EF_ERP.View
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für ERPView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ERPView : Window
     {
-        public MainWindow()
+        public ERPView()
         {
             InitializeComponent();
+        }
+
+        public void OpenAddDialog(object sender, RoutedEventArgs e)
+        {
+            AddDialog addDialog = new AddDialog();
+            addDialog.Show();
         }
     }
 }
