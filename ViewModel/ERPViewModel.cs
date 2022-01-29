@@ -9,9 +9,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using _4_06_EF_ERP.Logic;
 
-namespace _4_06_EF_ERP.ViewModel    
+namespace _4_06_EF_ERP.ViewModel
 {
     class ERPViewModel : INotifyPropertyChanged
     {
@@ -33,59 +35,28 @@ namespace _4_06_EF_ERP.ViewModel
 
             AddCommand = new RelayCommand(e =>
             {
-                AddInvoice(InvoiceToAdd);
+                InvoiceLogic.AddInvoice(InvoiceToAdd);
                 RaisePropertyChanged(nameof(Invoices));
             }, c => true);
 
             RemoveCommand = new RelayCommand(e =>
             {
-                RemoveInvoice(InvoiceToDelete);
-                RaisePropertyChanged(nameof(Invoices));
+                MessageBoxResult messageBoxResult =
+                    MessageBox.Show("Wollen Sie die Rechnung löschen?", "Löschen", MessageBoxButton.YesNo);
+                switch (messageBoxResult)
+                {
+                    case MessageBoxResult.Yes:
+                        InvoiceLogic.RemoveInvoice(InvoiceToDelete);
+                        RaisePropertyChanged(nameof(Invoices));
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                }
             }, c => true);
         }
 
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
-
-        private void AddInvoice(Invoice invoice)
-        {
-            invoice.InvoiceDate = DateTime.Now;
-            try
-            {
-                using (var ctx = new InvoiceContext())
-                {
-                    ctx.Invoices.Add(invoice);
-                    ctx.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        private void RemoveInvoice(Invoice invoice)
-        {
-            try
-            {
-                using (var ctx = new InvoiceContext())
-                {
-                    var found = ctx.Invoices.Find(invoice.Id);
-
-                    if(found != null)
-                    {
-                        ctx.Invoices.Remove(found);
-                        ctx.SaveChanges();
-                    }
-
-                    ctx.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([CallerMemberName] String propertyName = "")
