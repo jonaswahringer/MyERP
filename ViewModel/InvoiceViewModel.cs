@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +15,23 @@ namespace MyERP.ViewModel
     class InvoiceViewModel : INotifyPropertyChanged
     {
         #region properties
-        public InvoiceContext InvoiceCTX { get; set; }
+
+        public InvoiceContext InvoiceCTX = new InvoiceContext();
+
+        public IList<Invoice> InvoiceList
+        {
+            get
+            {
+                using (InvoiceCTX)
+                {
+                    return (from data in InvoiceCTX.invoices select data).ToList();
+                }
+            }
+        }
+
+        public Invoice InvoiceToAdd { get; set; } = new Invoice();
+        public Invoice InvoiceToRemove { get; set; } = new Invoice();
+
         #endregion
 
         #region constructor
@@ -27,42 +44,55 @@ namespace MyERP.ViewModel
 
             AddCommand = new RelayCommand(e =>
             {
-                addUser();
+                AddInvoice();
+                RaisePropertyChanged();
+                InvoiceToAdd = new Invoice();
             }, c => true);
 
             RemoveCommand = new RelayCommand(e =>
             {
-                
+                RemoveInvoice(InvoiceToRemove);
             }, c => true);
         }
         #endregion
 
         #region methods
-        public void addUser()
+        public void AddInvoice()
         {
-            using (InvoiceCTX = new InvoiceContext())
+            InvoiceToAdd.InvoiceDate = DateTime.Now;
+            
+            using (InvoiceCTX)
             {
-                Invoice inv = new Invoice()
-                {
-                    CustomerName = "Mike",
-                    CustomerAddress = "King's Street 1",
-                    Amount = 10000.0,
-                    Vat = 10,
-                    InvoiceDate = DateTime.Now
-                };
-
                 try
                 {
-                    Console.WriteLine(inv.Id);
-                    InvoiceCTX.invoices.Add(inv);
+                    InvoiceCTX.invoices.Add(InvoiceToAdd);
                     InvoiceCTX.SaveChanges();
+                    RaisePropertyChanged(nameof(InvoiceList));
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
-                
             }
+        }
+
+        public void RemoveInvoice(Invoice invToRemove)
+        {
+            using (InvoiceCTX)
+            {
+                try
+                {
+                    Invoice temp = InvoiceCTX.invoices.Find(invToRemove.Id);
+                    InvoiceCTX.invoices.Remove(temp);
+                    InvoiceCTX.SaveChanges();
+                    RaisePropertyChanged(nameof(InvoiceList));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            ;
         }
         #endregion
 

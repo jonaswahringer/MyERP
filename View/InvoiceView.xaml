@@ -7,11 +7,11 @@
         xmlns:src="clr-namespace:MyERP.ViewModel"
         mc:Ignorable="d"
         Title="View" Height="450" Width="800">
-    
+
     <Window.DataContext>
         <src:InvoiceViewModel />
     </Window.DataContext>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -21,13 +21,21 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        
-        <TextBox Text="needs binding"></TextBox>
-        <TextBox Text="needs binding"></TextBox>
-        <Button Content="Press me" Command="{Binding AddCommand}"/>
 
-            <ListView HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding Path=InvoiceCTX.invoices}"
+        <Label Content="Name" Margin="0,62,673,29"></Label>
+        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Margin="0,91,673,0"/>
+        <Label Content="Address" Margin="124,62,549,29"/>
+        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Margin="124,91,549,0"/>
+        <Label Content="Amount" Margin="248,62,425,29"/>
+        <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Margin="248,91,425,0"/>
+        <Label Content="VAT" Margin="372,62,301,29"/>
+        <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Margin="372,91,301,0"/>
+
+        <Button Content="Add" Command="{Binding AddCommand}" Margin="547,74,135,2"/>
+
+        <ListView HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding Path=InvoiceList}"
+                  SelectedItem="{Binding Path=InvoiceToRemove}"
                   Grid.Row="1" Grid.Column="0" FontWeight="Normal">
             <ListView.View>
                 <GridView>
@@ -44,15 +52,17 @@
 							DisplayMemberBinding="{Binding Path=Amount}"
 							Width="80" />
                     <GridViewColumn Header="Date"
-							DisplayMemberBinding="{Binding Path=Date}"
+							DisplayMemberBinding="{Binding Path=InvoiceDate}"
 							Width="80" />
                     <GridViewColumn Header="Vat"
 							DisplayMemberBinding="{Binding Path=Vat}"
 							Width="80" />
                 </GridView>
             </ListView.View>
-            
+
         </ListView>
-        
+
+        <Button Content="Remove" Margin="662,72,19,1" Command="{Binding Path=RemoveCommand}"/>
+
     </Grid>
 </Window>
