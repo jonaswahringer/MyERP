@@ -14,5 +14,7 @@ namespace MyERP.Model
         public double Amount { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int Vat { get; set; }
+
+        public ICollection<InvoicePosition> Positions { get; set; } = new List<InvoicePosition>(); //Referenz auf die Rechnungsposition
     }
 }

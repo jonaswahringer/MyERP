@@ -23,5 +23,22 @@ namespace MyERP.View
         {
             InitializeComponent();
         }
+
+        private void deleteDialog(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Would you like to delete this Invoice?", "My App", MessageBoxButton.YesNoCancel);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    MessageBox.Show("Hello to you too!", "My App");
+                    break;
+                case MessageBoxResult.No:
+                    MessageBox.Show("Oh well, too bad!", "My App");
+                    break;
+                case MessageBoxResult.Cancel:
+                    MessageBox.Show("Nevermind then...", "My App");
+                    break;
+            }
+        }
     }
 }

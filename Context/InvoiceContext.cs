@@ -10,7 +10,14 @@ namespace MyERP.Context
 {
     class InvoiceContext: DbContext
     {
-        public DbSet<Invoice> invoices { get; set; }
+
+        public InvoiceContext()
+        {
+            Database.SetInitializer(new InvoiceInitializer());
+        }
+
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoicePosition> InvoicePositions { get; set; }
 
     }
 }

@@ -12,7 +12,7 @@
         <src:InvoiceViewModel />
     </Window.DataContext>
 
-    <Grid>
+    <Grid Margin="0,-52,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -62,7 +62,8 @@
 
         </ListView>
 
-        <Button Content="Remove" Margin="662,72,19,1" Command="{Binding Path=RemoveCommand}"/>
+        <Button Content="Remove" Margin="662,72,19,1" Click="deleteDialog" Command="{Binding Path=RemoveCommand}"/>
+       
 
     </Grid>
 </Window>

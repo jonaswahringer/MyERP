@@ -24,7 +24,7 @@ namespace MyERP.ViewModel
             {
                 using (InvoiceCTX)
                 {
-                    return (from data in InvoiceCTX.invoices select data).ToList();
+                    return (from data in InvoiceCTX.Invoices select data).ToList();
                 }
             }
         }
@@ -37,6 +37,9 @@ namespace MyERP.ViewModel
         #region constructor
         public InvoiceViewModel()
         {
+            //temp method to test the 1:n relationship
+            TestRelationship();
+
             ExitCommand = new RelayCommand(e =>
             {
                 System.Environment.Exit(0);
@@ -47,27 +50,36 @@ namespace MyERP.ViewModel
                 AddInvoice();
                 RaisePropertyChanged();
                 InvoiceToAdd = new Invoice();
-            }, c => true);
+            }, c => InvoiceToAdd.CustomerName != null && InvoiceToAdd.CustomerAddress != null);
 
             RemoveCommand = new RelayCommand(e =>
             {
                 RemoveInvoice(InvoiceToRemove);
-            }, c => true);
+            }, c => InvoiceToRemove != null);
         }
         #endregion
 
         #region methods
+        public void TestRelationship()
+        {
+            using(InvoiceCTX = new InvoiceContext())
+            {
+                // Invoice myInnervoice = InvoiceCTX.Invoices.Include(inv => inv.InvoicePositions.Select(ud => ud.ItemNr)).FirstOrDefault(inv => inv.Id == 1);
+                Console.WriteLine(InvoiceCTX.Invoices.Include("InvoicePositions").FirstOrDefault(inv => inv.Id == 1));
+            }
+        }
         public void AddInvoice()
         {
             InvoiceToAdd.InvoiceDate = DateTime.Now;
             
-            using (InvoiceCTX)
+            using (InvoiceCTX = new InvoiceContext())
             {
                 try
                 {
-                    InvoiceCTX.invoices.Add(InvoiceToAdd);
+                    InvoiceCTX.Invoices.Add(InvoiceToAdd);
                     InvoiceCTX.SaveChanges();
                     RaisePropertyChanged(nameof(InvoiceList));
+                    InvoiceToAdd = new Invoice();
                 }
                 catch (Exception e)
                 {
@@ -78,12 +90,12 @@ namespace MyERP.ViewModel
 
         public void RemoveInvoice(Invoice invToRemove)
         {
-            using (InvoiceCTX)
+            using (InvoiceCTX = new InvoiceContext())
             {
                 try
                 {
-                    Invoice temp = InvoiceCTX.invoices.Find(invToRemove.Id);
-                    InvoiceCTX.invoices.Remove(temp);
+                    Invoice temp = InvoiceCTX.Invoices.Find(invToRemove.Id);
+                    InvoiceCTX.Invoices.Remove(temp);
                     InvoiceCTX.SaveChanges();
                     RaisePropertyChanged(nameof(InvoiceList));
                 }
