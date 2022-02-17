@@ -35,8 +35,13 @@ namespace _4_06_EF_ERP.ViewModel
 
             AddCommand = new RelayCommand(e =>
             {
+                InvoiceToAdd.InvoiceDate = DateTime.Now;
                 InvoiceLogic.AddInvoice(InvoiceToAdd);
-                ReloadInvoices();
+                foreach (var invoice in Invoices)
+                {
+                    Trace.WriteLine(invoice.Positions);
+                }
+                RaisePropertyChanged(nameof(Invoices));
             }, c => true);
 
             RemoveCommand = new RelayCommand(e =>
@@ -47,23 +52,12 @@ namespace _4_06_EF_ERP.ViewModel
                 {
                     case MessageBoxResult.Yes:
                         InvoiceLogic.RemoveInvoice(InvoiceToDelete);
-                        ReloadInvoices();
+                        RaisePropertyChanged(nameof(Invoices));
                         break;
                     case MessageBoxResult.No:
                         break;
                 }
             }, c => true);
-        }
-
-        public void ReloadInvoices()
-        {
-            Trace.WriteLine("Reload Invoices");
-            RaisePropertyChanged(nameof(Invoices));
-            Trace.WriteLine("Fertig!");
-            foreach (var invoice in Invoices)
-            {
-                Trace.WriteLine(invoice);
-            }
         }
 
         public ICommand AddCommand { get; private set; }

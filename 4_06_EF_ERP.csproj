@@ -65,7 +65,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Context\InvoiceInitializer.cs" />
     <Compile Include="Logic\InvoiceLogic.cs" />
+    <Compile Include="Model\Position.cs" />
     <Compile Include="ViewModel\ERPViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="View\AddDialog.xaml.cs">

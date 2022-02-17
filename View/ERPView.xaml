@@ -35,8 +35,19 @@
             </ListView.ContextMenu>
         </ListView>
 
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+            <Label Margin="10">Name</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Adresse</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Amount</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Vat</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
+        </StackPanel>
+        
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-            <Button Content="Add" Margin="10" Click="OpenAddDialog"></Button>
+            <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
             <Button Content="Remove" Margin="10" Command="{Binding Path=RemoveCommand}"></Button>
         </StackPanel>
     </Grid>

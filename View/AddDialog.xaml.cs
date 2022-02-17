@@ -37,7 +37,10 @@ namespace _4_06_EF_ERP.View
             var viewModel = (ERPViewModel) DataContext;
 
             if (viewModel.AddCommand.CanExecute(null))
+            {
                 viewModel.AddCommand.Execute(null);
+            }
+                
             
             this.Close();
         }

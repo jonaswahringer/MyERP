@@ -14,5 +14,7 @@ namespace _4_06_EF_ERP.Model
         public double Amount { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int Vat { get; set; }
+
+        public ICollection<Position> Positions { get; set; } = new List<Position>();
     }
 }
