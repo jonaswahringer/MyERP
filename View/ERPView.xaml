@@ -15,7 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.15*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
             <RowDefinition Height="0.4*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -35,7 +35,7 @@
             <Button Content="Remove" Margin="10" Command="{Binding Path=RemoveCommand}"></Button>
         </StackPanel>
 
-        <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=InvoiceToDelete}">
+        <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
@@ -52,6 +52,20 @@
             </ListView.ContextMenu>
         </ListView>
 
+        <ListView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" ItemsSource="{Binding Path=SelectedInvoice.Positions}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
+                    <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
+                    <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
         
     </Grid>
 </Window>

@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Data.Entity;
 using System.Windows.Input;
 using _4_06_EF_ERP.Logic;
 
@@ -23,12 +24,21 @@ namespace _4_06_EF_ERP.ViewModel
             {
                 using (InvoiceContext ctx = new InvoiceContext())
                 {
-                    return (from data in ctx.Invoices select data).ToList();
+                    return (from data in ctx.Invoices.Include(p => p.Positions) select data).ToList();
                 }
             }
         }
         public Invoice InvoiceToAdd { get; set; } = new Invoice();
-        public Invoice InvoiceToDelete { get; set; } = new Invoice();
+        public Invoice selectedInvoice = new Invoice();
+        public Invoice SelectedInvoice
+        {
+            get => selectedInvoice;
+            set
+            {
+                selectedInvoice = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ERPViewModel()
         {
@@ -51,7 +61,7 @@ namespace _4_06_EF_ERP.ViewModel
                 switch (messageBoxResult)
                 {
                     case MessageBoxResult.Yes:
-                        InvoiceLogic.RemoveInvoice(InvoiceToDelete);
+                        InvoiceLogic.RemoveInvoice(SelectedInvoice);
                         RaisePropertyChanged(nameof(Invoices));
                         break;
                     case MessageBoxResult.No:
