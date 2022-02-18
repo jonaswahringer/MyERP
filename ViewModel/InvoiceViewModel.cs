@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MyERP.Context;
 using MyERP.Model;
+using System.Data.Entity;
 
 namespace MyERP.ViewModel
 {
@@ -22,9 +23,9 @@ namespace MyERP.ViewModel
         {
             get
             {
-                using (InvoiceCTX)
+                using (InvoiceCTX = new InvoiceContext())
                 {
-                    return (from data in InvoiceCTX.Invoices select data).ToList();
+                    return (from data in InvoiceCTX.Invoices.Include(p => p.Positions) select data).ToList();
                 }
             }
         }
@@ -37,9 +38,6 @@ namespace MyERP.ViewModel
         #region constructor
         public InvoiceViewModel()
         {
-            //temp method to test the 1:n relationship
-            TestRelationship();
-
             ExitCommand = new RelayCommand(e =>
             {
                 System.Environment.Exit(0);
@@ -60,14 +58,6 @@ namespace MyERP.ViewModel
         #endregion
 
         #region methods
-        public void TestRelationship()
-        {
-            using(InvoiceCTX = new InvoiceContext())
-            {
-                // Invoice myInnervoice = InvoiceCTX.Invoices.Include(inv => inv.InvoicePositions.Select(ud => ud.ItemNr)).FirstOrDefault(inv => inv.Id == 1);
-                Console.WriteLine(InvoiceCTX.Invoices.Include("InvoicePositions").FirstOrDefault(inv => inv.Id == 1));
-            }
-        }
         public void AddInvoice()
         {
             InvoiceToAdd.InvoiceDate = DateTime.Now;

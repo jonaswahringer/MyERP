@@ -14,14 +14,15 @@
 
     <Grid Margin="0,-52,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto" MinWidth="100"/>
+            <ColumnDefinition Width="Auto" MinWidth="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.4*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-
+        
+        
         <Label Content="Name" Margin="0,62,673,29"></Label>
         <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Margin="0,91,673,0"/>
         <Label Content="Address" Margin="124,62,549,29"/>
@@ -59,7 +60,32 @@
 							Width="80" />
                 </GridView>
             </ListView.View>
-
+        </ListView>
+        <ListView HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding Path=InvoiceList}"
+                  Grid.Row="1" Grid.Column="1" FontWeight="Normal">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id"
+							DisplayMemberBinding="{Binding Path=InvoiceTo}"
+							Width="80" />
+                    <GridViewColumn Header="CustomerName"
+							DisplayMemberBinding="{Binding Path=CustomerName}"
+							Width="80" />
+                    <GridViewColumn Header="CustomerAddress"
+							DisplayMemberBinding="{Binding Path=CustomerAddress}"
+							Width="80" />
+                    <GridViewColumn Header="Amount"
+							DisplayMemberBinding="{Binding Path=Amount}"
+							Width="80" />
+                    <GridViewColumn Header="Date"
+							DisplayMemberBinding="{Binding Path=InvoiceDate}"
+							Width="80" />
+                    <GridViewColumn Header="Vat"
+							DisplayMemberBinding="{Binding Path=Vat}"
+							Width="80" />
+                </GridView>
+            </ListView.View>
         </ListView>
 
         <Button Content="Remove" Margin="662,72,19,1" Click="deleteDialog" Command="{Binding Path=RemoveCommand}"/>
