@@ -17,6 +17,7 @@
             <RowDefinition Height="0.15*"></RowDefinition>
             <RowDefinition Height="0.8*"></RowDefinition>
             <RowDefinition Height="0.4*"></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
@@ -52,7 +53,7 @@
             </ListView.ContextMenu>
         </ListView>
 
-        <ListView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" ItemsSource="{Binding Path=SelectedInvoice.Positions}">
+        <ListView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
@@ -66,6 +67,14 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        
+
+        <TextBlock Grid.Row="3">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0}">
+                    <Binding Path="SelectedPositionsSum"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _4_06_EF_ERP.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,12 @@ namespace _4_06_EF_ERP.View
         {
             AddDialog addDialog = new AddDialog();
             addDialog.Show();
+        }
+
+        public void selectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = (ERPViewModel)DataContext;
+            viewModel.SelectedPositionsSum = (int) viewModel.SelectedPositions.Select(x => x.Price).Sum();
         }
     }
 }

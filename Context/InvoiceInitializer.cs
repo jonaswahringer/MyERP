@@ -17,8 +17,8 @@ namespace _4_06_EF_ERP.Context
             defaultPositions.Add(new Position
             {
                 ItemNr = 0,
-                Price = 100,
-                Qty = 10
+                Price = 200,
+                Qty = 20
             });
 
             defaultPositions.Add(new Position
@@ -31,8 +31,8 @@ namespace _4_06_EF_ERP.Context
             defaultPositions.Add(new Position
             {
                 ItemNr = 2,
-                Price = 100,
-                Qty = 10
+                Price = 70,
+                Qty = 15
             });
 
             defaults.Add(new Invoice
@@ -45,6 +45,8 @@ namespace _4_06_EF_ERP.Context
                 //Positions = defaultPositions
             });
             defaults[0].Positions.Add(defaultPositions[0]);
+            defaults[0].Positions.Add(defaultPositions[1]);
+            defaults[0].Positions.Add(defaultPositions[2]);
 
             defaults.Add(new Invoice
             {
@@ -67,6 +69,7 @@ namespace _4_06_EF_ERP.Context
                 //Positions = defaultPositions
             });
             defaults[2].Positions.Add(defaultPositions[2]);
+            defaults[2].Positions.Add(defaultPositions[0]);
 
             defaults.Add(new Invoice
             {

@@ -40,6 +40,18 @@ namespace _4_06_EF_ERP.ViewModel
             }
         }
 
+        public List<Position> SelectedPositions { get; set; } = new List<Position>();
+        public int selectedPositionsSum = 0;
+        public int SelectedPositionsSum
+        {
+            get => selectedPositionsSum;
+            set
+            {
+                selectedPositionsSum = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public ERPViewModel()
         {
 
