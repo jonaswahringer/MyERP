@@ -42,8 +42,9 @@ namespace _4_06_EF_ERP.Context
                 CustomerAddress = "Ybbs",
                 InvoiceDate = new DateTime(2020, 01, 25),
                 Vat = 20,
-                Positions = defaultPositions
+                //Positions = defaultPositions
             });
+            defaults[0].Positions.Add(defaultPositions[0]);
 
             defaults.Add(new Invoice
             {
@@ -52,8 +53,9 @@ namespace _4_06_EF_ERP.Context
                 CustomerAddress = "Ybbs",
                 InvoiceDate = new DateTime(2020, 01, 15),
                 Vat = 20,
-                Positions = defaultPositions
+                //Positions = defaultPositions
             });
+            defaults[1].Positions.Add(defaultPositions[1]);
 
             defaults.Add(new Invoice
             {
@@ -62,8 +64,9 @@ namespace _4_06_EF_ERP.Context
                 CustomerAddress = "Ybbs",
                 InvoiceDate = new DateTime(2020, 01, 10),
                 Vat = 20,
-                Positions = defaultPositions
+                //Positions = defaultPositions
             });
+            defaults[2].Positions.Add(defaultPositions[2]);
 
             defaults.Add(new Invoice
             {
