@@ -12,84 +12,67 @@
         <src:InvoiceViewModel />
     </Window.DataContext>
 
-    <Grid Margin="0,-52,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="100"/>
-            <ColumnDefinition Width="Auto" MinWidth="100"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
+            <RowDefinition Height="0.4*"></RowDefinition>
         </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+            <Label Margin="10">Name</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Adresse</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Amount</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
+            <Label Margin="10">Vat</Label>
+            <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
+        </StackPanel>
         
-        
-        <Label Content="Name" Margin="0,62,673,29"></Label>
-        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Margin="0,91,673,0"/>
-        <Label Content="Address" Margin="124,62,549,29"/>
-        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Margin="124,91,549,0"/>
-        <Label Content="Amount" Margin="248,62,425,29"/>
-        <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Margin="248,91,425,0"/>
-        <Label Content="VAT" Margin="372,62,301,29"/>
-        <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Margin="372,91,301,0"/>
-
-        <Button Content="Add" Command="{Binding AddCommand}" Margin="547,74,135,2"/>
-
-        <ListView HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding Path=InvoiceList}"
-                  SelectedItem="{Binding Path=InvoiceToRemove}"
-                  Grid.Row="1" Grid.Column="0" FontWeight="Normal">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Id"
-							DisplayMemberBinding="{Binding Path=Id}"
-							Width="80" />
-                    <GridViewColumn Header="CustomerName"
-							DisplayMemberBinding="{Binding Path=CustomerName}"
-							Width="80" />
-                    <GridViewColumn Header="CustomerAddress"
-							DisplayMemberBinding="{Binding Path=CustomerAddress}"
-							Width="80" />
-                    <GridViewColumn Header="Amount"
-							DisplayMemberBinding="{Binding Path=Amount}"
-							Width="80" />
-                    <GridViewColumn Header="Date"
-							DisplayMemberBinding="{Binding Path=InvoiceDate}"
-							Width="80" />
-                    <GridViewColumn Header="Vat"
-							DisplayMemberBinding="{Binding Path=Vat}"
-							Width="80" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ListView HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding Path=InvoiceList}"
-                  Grid.Row="1" Grid.Column="1" FontWeight="Normal">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Id"
-							DisplayMemberBinding="{Binding Path=InvoiceTo}"
-							Width="80" />
-                    <GridViewColumn Header="CustomerName"
-							DisplayMemberBinding="{Binding Path=CustomerName}"
-							Width="80" />
-                    <GridViewColumn Header="CustomerAddress"
-							DisplayMemberBinding="{Binding Path=CustomerAddress}"
-							Width="80" />
-                    <GridViewColumn Header="Amount"
-							DisplayMemberBinding="{Binding Path=Amount}"
-							Width="80" />
-                    <GridViewColumn Header="Date"
-							DisplayMemberBinding="{Binding Path=InvoiceDate}"
-							Width="80" />
-                    <GridViewColumn Header="Vat"
-							DisplayMemberBinding="{Binding Path=Vat}"
-							Width="80" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <Button Content="Remove" Margin="662,72,19,1" Click="deleteDialog" Command="{Binding Path=RemoveCommand}"/>
-       
-
     </Grid>
+
+    <Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="667,0,0,0">
+            <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
+            <Button Content="Remove" Margin="10" Command="{Binding Path=RemoveCommand}"></Button>
+        </StackPanel>
+        
+        <StackPanel>
+            <ListView Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=InvoiceList}" SelectedItem="{Binding Path=SelectedInvoice}" Margin="0,50,0,0" Grid.RowSpan="2">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
+                        <GridViewColumn Header="Address" Width="150" DisplayMemberBinding="{Binding Path=CustomerAddress}" />
+                        <GridViewColumn Header="Amount" Width="150" DisplayMemberBinding="{Binding Path=Amount}" />
+                        <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Path=InvoiceDate}" />
+                        <GridViewColumn Header="Vat" Width="150" DisplayMemberBinding="{Binding Path=Vat}" />
+                    </GridView>
+                </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+        </StackPanel>
+
+        <StackPanel>
+            <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" Margin="0,268,0,33" Grid.RowSpan="3">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
+                        <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
+                        <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
+                    </GridView>
+                </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+        </StackPanel>
+    </Grid>
+    
 </Window>

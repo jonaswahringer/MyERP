@@ -31,7 +31,16 @@ namespace MyERP.ViewModel
         }
 
         public Invoice InvoiceToAdd { get; set; } = new Invoice();
-        public Invoice InvoiceToRemove { get; set; } = new Invoice();
+        private Invoice selectedInvoice { get; set; }
+        public Invoice SelectedInvoice
+        {
+            get => selectedInvoice;
+            set
+            {
+                selectedInvoice = value;
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -52,8 +61,8 @@ namespace MyERP.ViewModel
 
             RemoveCommand = new RelayCommand(e =>
             {
-                RemoveInvoice(InvoiceToRemove);
-            }, c => InvoiceToRemove != null);
+                RemoveInvoice(SelectedInvoice);
+            }, c => SelectedInvoice != null);
         }
         #endregion
 
