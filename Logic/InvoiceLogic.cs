@@ -19,7 +19,6 @@ namespace _4_06_EF_ERP.Logic
                 {
                     ctx.Invoices.Add(invoice);
                     ctx.SaveChanges();
-                    ctx.SaveChanges();
                 }
             }
             catch (Exception e)

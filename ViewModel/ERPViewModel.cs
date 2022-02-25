@@ -61,7 +61,7 @@ namespace _4_06_EF_ERP.ViewModel
                 InvoiceLogic.AddInvoice(InvoiceToAdd);
                 foreach (var invoice in Invoices)
                 {
-                    Trace.WriteLine(invoice.Positions);
+                    Trace.WriteLine(invoice.Vat);
                 }
                 RaisePropertyChanged(nameof(Invoices));
             }, c => true);

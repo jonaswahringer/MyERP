@@ -5,38 +5,87 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_4_06_EF_ERP.View"
         xmlns:src="clr-namespace:_4_06_EF_ERP.ViewModel"
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
         mc:Ignorable="d"
-        Title="ERPView" Height="450" Width="800">
+        Title="ERPView" Height="650" Width="800">
 
     <Window.DataContext>
         <src:ERPViewModel></src:ERPViewModel>
     </Window.DataContext>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.15*"></RowDefinition>
-            <RowDefinition Height="0.8*"></RowDefinition>
-            <RowDefinition Height="0.4*"></RowDefinition>
-            <RowDefinition Height="0.1*"></RowDefinition>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
-            <Label Margin="10">Name</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Adresse</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Amount</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Vat</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
-        </StackPanel>
+    <DockPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-            <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
-            <Button Content="Remove" Margin="10" Command="{Binding Path=RemoveCommand}"></Button>
-        </StackPanel>
+        <ribbon:Ribbon DockPanel.Dock="Top">
+            <Ribbon.HelpPaneContent>
+                <RibbonButton SmallImageSource="/Images/help-circle.png" />
+            </Ribbon.HelpPaneContent>
 
-        <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu Label="Test">
+                    <RibbonApplicationMenuItem Header="Info" ImageSource="/Images/information.png" />
+                    <RibbonApplicationMenuItem Header="Drucken" ImageSource="/Images/printer.png" />
+                    <RibbonApplicationMenuItem Header="Exit" ImageSource="/Images/exit-to-app.png" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+
+            <ribbon:Ribbon.QuickAccessToolBar>
+                <ribbon:RibbonQuickAccessToolBar>
+                    <ribbon:RibbonButton SmallImageSource="/Images/printer.png"></ribbon:RibbonButton>
+                    <ribbon:RibbonButton SmallImageSource="/Images/exit-to-app.png"></ribbon:RibbonButton>
+                </ribbon:RibbonQuickAccessToolBar>
+            </ribbon:Ribbon.QuickAccessToolBar>
+
+            <ribbon:RibbonTab Header="Anwendung">
+                <ribbon:RibbonGroup Header="Allgemein">
+                    <ribbon:RibbonMenuButton Label="Informationen" LargeImageSource="/Images/information.png"></ribbon:RibbonMenuButton>
+                    <ribbon:RibbonMenuButton Label="Exit" LargeImageSource="/Images/exit-to-app.png"></ribbon:RibbonMenuButton>
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Druck">
+                <ribbon:RibbonGroup Header="Drucken">
+                    <ribbon:RibbonMenuButton Label="Drucken" LargeImageSource="/Images/printer.png"/>
+                    <ribbon:RibbonMenuButton Label="Druckvorschau" LargeImageSource="/Images/printer-eye.png"/>
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+            <ribbon:RibbonTab Header="Rechnung">
+                <ribbon:RibbonGroup Header="Eingabe">
+                    <StackPanel Margin="10px">
+                        <Label>Name</Label>
+                        <TextBox Width="80" Text="{Binding Path=InvoiceToAdd.CustomerName}"></TextBox>
+                    </StackPanel>
+
+                    <StackPanel Margin="10px">
+                        <Label>Adresse</Label>
+                        <TextBox Width="80" Text="{Binding Path=InvoiceToAdd.CustomerAddress}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="10px">
+                        <Label>Anzahl</Label>
+                        <TextBox Width="40" Text="{Binding Path=InvoiceToAdd.Amount}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="10px">
+                        <Label>Vat</Label>
+                        <TextBox Width="40" Text="{Binding Path=InvoiceToAdd.Vat}"></TextBox>
+                    </StackPanel>
+                </ribbon:RibbonGroup>
+                <ribbon:RibbonGroup Header="Aktionen">
+                    <StackPanel Margin="5px">
+                        <ribbon:RibbonButton Label="Hinzufügen" LargeImageSource="/Images/upload.png" Command="{Binding Path=AddCommand}"></ribbon:RibbonButton>
+                    </StackPanel>
+                    <StackPanel Margin="5px">
+                        <ribbon:RibbonButton Label="Entfernen" LargeImageSource="/Images/delete.png" Command="{Binding Path=RemoveCommand}"></ribbon:RibbonButton>
+                    </StackPanel>
+                </ribbon:RibbonGroup>
+            </ribbon:RibbonTab>
+        </ribbon:Ribbon>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*"></RowDefinition>
+                <RowDefinition Height="0.4*"></RowDefinition>
+                <RowDefinition Height="0.1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
@@ -53,7 +102,7 @@
             </ListView.ContextMenu>
         </ListView>
 
-        <ListView Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
+        <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
@@ -68,7 +117,7 @@
             </ListView.ContextMenu>
         </ListView>
 
-        <TextBlock Grid.Row="3">
+        <TextBlock Grid.Row="2">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0}">
                     <Binding Path="SelectedPositionsSum"/>
@@ -77,4 +126,5 @@
         </TextBlock>
 
     </Grid>
+    </DockPanel>
 </Window>
