@@ -12,34 +12,38 @@
         <src:InvoiceViewModel />
     </Window.DataContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.15*"></RowDefinition>
-            <RowDefinition Height="0.8*"></RowDefinition>
-            <RowDefinition Height="0.4*"></RowDefinition>
-        </Grid.RowDefinitions>
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
-            <Label Margin="10">Name</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Adresse</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Amount</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
-            <Label Margin="10">Vat</Label>
-            <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
-        </StackPanel>
-        
-    </Grid>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+                <Label Margin="10">Name</Label>
+                <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
+                <Label Margin="10">Adresse</Label>
+                <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
+                <Label Margin="10">Amount</Label>
+                <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
+                <Label Margin="10">Vat</Label>
+                <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="667,0,0,0" >
+                <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
+                <Button Content="Remove" Command="{Binding Path=RemoveCommand}"></Button>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.6*" />
+                <ColumnDefinition Width="0.4*" />
+            </Grid.ColumnDefinitions>
 
-    <Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="667,0,0,0">
-            <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
-            <Button Content="Remove" Margin="10" Command="{Binding Path=RemoveCommand}"></Button>
-        </StackPanel>
-        
-        <StackPanel>
-            <ListView Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=InvoiceList}" SelectedItem="{Binding Path=SelectedInvoice}" Margin="0,50,0,0" Grid.RowSpan="2">
+            <StackPanel Grid.Column="0">
+            <ListView ItemsSource="{Binding Path=InvoiceList}" SelectedItem="{Binding Path=SelectedInvoice}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
@@ -57,8 +61,8 @@
             </ListView>
         </StackPanel>
 
-        <StackPanel>
-            <ListView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" Margin="0,268,0,33" Grid.RowSpan="3">
+        <StackPanel Grid.Column="1">
+            <ListView ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" Margin="0,268,0,33" Grid.RowSpan="3">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
@@ -74,5 +78,5 @@
             </ListView>
         </StackPanel>
     </Grid>
-    
+    </StackPanel>
 </Window>
