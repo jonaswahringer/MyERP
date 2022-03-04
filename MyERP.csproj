@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -118,7 +119,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\address_24dp.png" />
+    <Resource Include="images\amount_24dp.png" />
+    <Resource Include="images\customer_24dp.png" />
+    <Resource Include="images\customer_invoice_24dp.png" />
+    <Resource Include="images\invoice_24dp.png" />
+    <Resource Include="images\vat_24dp.png" />
+    <Resource Include="images\menu_open_24dp.png" />
+    <Resource Include="images\copy_24dp.png" />
+    <Resource Include="images\cut_24dp.png" />
+    <Resource Include="images\paste_24dp.png" />
+    <Resource Include="images\exit_24dp.png" />
+    <Resource Include="images\info_24dp.png" />
+    <Resource Include="images\preview_24dp.png" />
+    <Content Include="images\print_24dp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

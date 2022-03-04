@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
         xmlns:local="clr-namespace:MyERP.View"
         xmlns:src="clr-namespace:MyERP.ViewModel"
         mc:Ignorable="d"
@@ -13,6 +14,60 @@
     </Window.DataContext>
 
     <StackPanel>
+        <DockPanel>
+            <ribbon:Ribbon DockPanel.Dock="Top">
+                <ribbon:Ribbon.QuickAccessToolBar>
+                    <ribbon:RibbonQuickAccessToolBar>
+                        <StackPanel Orientation="Horizontal">
+                            <ribbon:RibbonButton SmallImageSource="/images/cut_24dp.png" VerticalAlignment="Center"/>
+                            <ribbon:RibbonButton SmallImageSource="/images/copy_24dp.png" VerticalAlignment="Center"/>
+                            <ribbon:RibbonButton SmallImageSource="/images/paste_24dp.png" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ribbon:RibbonQuickAccessToolBar>
+                </ribbon:Ribbon.QuickAccessToolBar>
+
+                <ribbon:Ribbon.ApplicationMenu>
+                    <ribbon:RibbonApplicationMenu SmallImageSource="/images\menu_open_24dp.png">
+                        <ribbon:RibbonApplicationMenuItem Header="Hello _Ribbon"  
+                                                      x:Name="MenuItem1"  
+                                                      ImageSource="/images\print_24dp.png"/>
+                    </ribbon:RibbonApplicationMenu>
+                </ribbon:Ribbon.ApplicationMenu>
+
+                <ribbon:RibbonTab Header="Start" ItemsSource="{Binding Path=InvoiceToAdd}">
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Cut" LargeImageSource="/images/cut_24dp.png"/>
+                        <ribbon:RibbonMenuButton Label="Copy" LargeImageSource="/images/copy_24dp.png"/>
+                        <ribbon:RibbonMenuButton Label="Paste" LargeImageSource="/images/paste_24dp.png"/>
+                    </ribbon:RibbonGroup>
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Cut" LargeImageSource="/images/cut_24dp.png"/>
+                        <ribbon:RibbonMenuButton Label="Copy" LargeImageSource="/images/copy_24dp.png"/>
+                        <ribbon:RibbonMenuButton Label="Paste" LargeImageSource="/images/paste_24dp.png"/>
+                    </ribbon:RibbonGroup>
+                </ribbon:RibbonTab>
+                <ribbon:RibbonTab Header="File">
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Print" LargeImageSource="/images/print_24dp.png" />
+                    </ribbon:RibbonGroup>
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Print Preview" LargeImageSource="/images/preview_24dp.png" />
+                    </ribbon:RibbonGroup>
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Info" LargeImageSource="/images/info_24dp.png" />
+                    </ribbon:RibbonGroup>
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuButton Label="Exit" LargeImageSource="/images/exit_24dp.png" />
+                    </ribbon:RibbonGroup>
+                </ribbon:RibbonTab>
+                <ribbon:RibbonTab Header="New">
+                    <ribbon:RibbonMenuItem>
+                        <Image Source="/images/customer_24dp.png" />
+                        <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.CustomerName}"/>
+                    </ribbon:RibbonMenuItem>
+                </ribbon:RibbonTab>
+            </ribbon:Ribbon>
+        </DockPanel>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -62,7 +117,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1">
-            <ListView ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" Margin="0,268,0,33" Grid.RowSpan="3">
+            <ListView ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
