@@ -10,6 +10,12 @@ using System.Windows.Input;
 using MyERP.Context;
 using MyERP.Model;
 using System.Data.Entity;
+using System.Windows.Documents;
+using System.IO;
+using System.Windows.Markup;
+using System.Xml;
+using MyERP.Printing;
+using System.Windows.Controls;
 
 namespace MyERP.ViewModel
 {
@@ -63,10 +69,36 @@ namespace MyERP.ViewModel
             {
                 RemoveInvoice(SelectedInvoice);
             }, c => SelectedInvoice != null);
+
+            PrintCommand = new RelayCommand(e =>
+            {
+                FlowDocument document = InvoiceViewModel.getFlowDocument("Printing/InvoicePrint.xaml");
+
+                var invoicePrintData = new InvoicePrintData();
+                invoicePrintData.Invoice = SelectedInvoice;
+                invoicePrintData.Positions = SelectedInvoice.Positions;
+                document.DataContext = invoicePrintData;
+
+                PrintDialog printDialog = new PrintDialog();
+                if (printDialog.ShowDialog() == true)
+                    printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
+            }, c => SelectedInvoice != null);
         }
         #endregion
 
         #region methods
+        private static FlowDocument getFlowDocument(String path)
+        {
+            String rawDocument = "";
+            using (StreamReader streamReader = File.OpenText(path))
+            {
+                rawDocument = streamReader.ReadToEnd();
+            }
+
+            FlowDocument flowDocument = XamlReader.Load(new XmlTextReader(new StringReader(rawDocument))) as FlowDocument;
+            return flowDocument;
+        }
+
         public void AddInvoice()
         {
             InvoiceToAdd.InvoiceDate = DateTime.Now;
@@ -111,6 +143,7 @@ namespace MyERP.ViewModel
         public ICommand ExitCommand { get; private set; }
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
+        public ICommand PrintCommand { get; private set; }
         #endregion
 
         #region notify

@@ -15,7 +15,7 @@
 
     <StackPanel>
         <DockPanel>
-            <ribbon:Ribbon DockPanel.Dock="Top">
+            <ribbon:Ribbon DockPanel.Dock="Top" SelectionChanged="Ribbon_SelectionChanged">
                 <ribbon:Ribbon.QuickAccessToolBar>
                     <ribbon:RibbonQuickAccessToolBar>
                         <StackPanel Orientation="Horizontal">
@@ -30,11 +30,12 @@
                     <ribbon:RibbonApplicationMenu SmallImageSource="/images\menu_open_24dp.png">
                         <ribbon:RibbonApplicationMenuItem Header="Hello _Ribbon"  
                                                       x:Name="MenuItem1"  
-                                                      ImageSource="/images\print_24dp.png"/>
+                                                      ImageSource="/images\print_24dp.png"
+                                                          Command="{Binding Path=PrintCommand}"/>
                     </ribbon:RibbonApplicationMenu>
                 </ribbon:Ribbon.ApplicationMenu>
 
-                <ribbon:RibbonTab Header="Start" ItemsSource="{Binding Path=InvoiceToAdd}">
+                <ribbon:RibbonTab Header="Start">
                     <ribbon:RibbonGroup>
                         <ribbon:RibbonMenuButton Label="Cut" LargeImageSource="/images/cut_24dp.png"/>
                         <ribbon:RibbonMenuButton Label="Copy" LargeImageSource="/images/copy_24dp.png"/>
@@ -48,7 +49,9 @@
                 </ribbon:RibbonTab>
                 <ribbon:RibbonTab Header="File">
                     <ribbon:RibbonGroup>
-                        <ribbon:RibbonMenuButton Label="Print" LargeImageSource="/images/print_24dp.png" />
+                        <ribbon:RibbonMenuButton Label="Print" LargeImageSource="/images/print_24dp.png" >
+                            <ribbon:RibbonMenuItem Command="{Binding Path=PrintCommand}" />
+                        </ribbon:RibbonMenuButton>
                     </ribbon:RibbonGroup>
                     <ribbon:RibbonGroup>
                         <ribbon:RibbonMenuButton Label="Print Preview" LargeImageSource="/images/preview_24dp.png" />
@@ -60,11 +63,27 @@
                         <ribbon:RibbonMenuButton Label="Exit" LargeImageSource="/images/exit_24dp.png" />
                     </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
-                <ribbon:RibbonTab Header="New">
-                    <ribbon:RibbonMenuItem>
-                        <Image Source="/images/customer_24dp.png" />
-                        <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.CustomerName}"/>
-                    </ribbon:RibbonMenuItem>
+                <ribbon:RibbonTab Header="New"  ItemsSource="{Binding Path=InvoiceToAdd}">
+                    <ribbon:RibbonGroup>
+                        <ribbon:RibbonMenuItem>
+                            <Image Source="/images/customer_24dp.png" />
+                            <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.CustomerName}"/>
+                        </ribbon:RibbonMenuItem>
+                        
+                        <ribbon:RibbonMenuItem>
+                            <Image Source="/images/address_24dp.png" />
+                            <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.CustomerAddress}"/>
+                        </ribbon:RibbonMenuItem>
+                        
+                        <ribbon:RibbonMenuItem>
+                            <Image Source="/images/amount_24dp.png" />
+                            <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.Amount}"/>
+                        </ribbon:RibbonMenuItem>
+                        <ribbon:RibbonMenuItem>
+                            <Image Source="/images/vat_24dp.png" />
+                            <ribbon:RibbonTextBox Command="{Binding Path=InvoiceToAdd.Vat}"/>
+                        </ribbon:RibbonMenuItem>
+                    </ribbon:RibbonGroup>
                 </ribbon:RibbonTab>
             </ribbon:Ribbon>
         </DockPanel>

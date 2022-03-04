@@ -40,5 +40,10 @@ namespace MyERP.View
                     break;
             }
         }
+
+        private void Ribbon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

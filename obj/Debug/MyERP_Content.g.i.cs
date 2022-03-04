@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("printing/invoiceprint.xaml")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/print_24dp.png")]
 
 
