@@ -43,7 +43,7 @@
             </ribbon:RibbonTab>
             <ribbon:RibbonTab Header="Druck">
                 <ribbon:RibbonGroup Header="Drucken">
-                    <ribbon:RibbonMenuButton Label="Drucken" LargeImageSource="/Images/printer.png"/>
+                    <ribbon:RibbonButton Label="Drucken" LargeImageSource="/Images/printer.png" Command="{Binding Path=PrintCommand}"/>
                     <ribbon:RibbonMenuButton Label="Druckvorschau" LargeImageSource="/Images/printer-eye.png"/>
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>

@@ -13,6 +13,12 @@ using System.Windows;
 using System.Data.Entity;
 using System.Windows.Input;
 using _4_06_EF_ERP.Logic;
+using System.Windows.Documents;
+using System.IO;
+using System.Windows.Markup;
+using System.Xml;
+using _4_06_EF_ERP.Printing;
+using System.Windows.Controls;
 
 namespace _4_06_EF_ERP.ViewModel
 {
@@ -28,7 +34,16 @@ namespace _4_06_EF_ERP.ViewModel
                 }
             }
         }
-        public Invoice InvoiceToAdd { get; set; } = new Invoice();
+        public Invoice invoiceToAdd = new Invoice();
+        public Invoice InvoiceToAdd
+        {
+            get => invoiceToAdd;
+            set
+            {
+                invoiceToAdd = value;
+                RaisePropertyChanged();
+            }
+        }
         public Invoice selectedInvoice = new Invoice();
         public Invoice SelectedInvoice
         {
@@ -80,10 +95,36 @@ namespace _4_06_EF_ERP.ViewModel
                         break;
                 }
             }, c => true);
+
+            PrintCommand = new RelayCommand(e =>
+            {
+                FlowDocument document = ERPViewModel.getFlowDocument("Printing/Invoice.xaml");
+
+                var invoicePrintData = new InvoicePrintData();
+                invoicePrintData.Invoice = SelectedInvoice;
+                document.DataContext = invoicePrintData;
+
+                PrintDialog printDialog = new PrintDialog();
+                if (printDialog.ShowDialog() == true)
+                    printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
+            }, c => true);
+        }
+
+        private static FlowDocument getFlowDocument(String path)
+        {
+            String rawDocument = "";
+            using (StreamReader streamReader = File.OpenText(path))
+            {
+                rawDocument = streamReader.ReadToEnd();
+            }
+
+            FlowDocument flowDocument = XamlReader.Load(new XmlTextReader(new StringReader(rawDocument))) as FlowDocument;
+            return flowDocument;
         }
 
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
+        public ICommand PrintCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([CallerMemberName] String propertyName = "")

@@ -69,6 +69,7 @@
     <Compile Include="Context\InvoiceInitializer.cs" />
     <Compile Include="Logic\InvoiceLogic.cs" />
     <Compile Include="Model\Position.cs" />
+    <Compile Include="Printing\InvoicePrintData.cs" />
     <Compile Include="ViewModel\ERPViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="View\AddDialog.xaml.cs">
@@ -82,6 +83,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Context\InvoiceContext.cs" />
+    <Content Include="Printing\Invoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Page Include="View\AddDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
