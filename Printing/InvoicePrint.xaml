@@ -62,9 +62,9 @@
         <ListView.View>
           <GridView>
             <GridViewColumn Header="Pos" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
-            <GridViewColumn Header="Einzelpreis" Width="150" DisplayMemberBinding="{Binding Path=Price, StringFormat={}{0:C}}" HorizontalAlignment="Right" />
+            <GridViewColumn Header="Einzelpreis" Width="150" DisplayMemberBinding="{Binding Path=Price, StringFormat={}{0:C}}" />
             <GridViewColumn Header="Stück" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
-            <GridViewColumn Header="Gesamtpreis" Width="150" DisplayMemberBinding="{Binding Path=PriceOverall, StringFormat={}{0:C}}" HorizontalAlignment="Right" />
+            <GridViewColumn Header="Gesamtpreis" Width="150" DisplayMemberBinding="{Binding Path=PriceOverall, StringFormat={}{0:C}}" />
           </GridView>
         </ListView.View>
       </ListView>
