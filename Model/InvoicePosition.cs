@@ -13,8 +13,12 @@ namespace MyERP.Model
         public int ItemNr { get; set; }
         public int Qty { get; set; }
         public double Price { get; set; }
+        public double priceOverall;
+        public double PriceOverall {     
+          get { return Price * Qty; }
+        }
 
-        public int InvoiceId { get; set; }             // FK der Rechung
+    public int InvoiceId { get; set; }             // FK der Rechung
         public InvoicePosition Invoice { get; set; }     // Referenz auf die Rechnung
 
     }
