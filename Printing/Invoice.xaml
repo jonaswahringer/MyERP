@@ -50,4 +50,16 @@
     </ListView>
     </BlockUIContainer>
 
+    <BlockUIContainer>
+    <Image Source="{Binding BarCode}" 
+                   Width="100" 
+                   Height="50" />
+    </BlockUIContainer>
+        
+        <BlockUIContainer>
+            <Image Source="{Binding QrCode}" 
+                   Width="100" 
+                   Height="100"/>
+        </BlockUIContainer>
+    
 </FlowDocument>

@@ -19,6 +19,10 @@ using System.Windows.Markup;
 using System.Xml;
 using _4_06_EF_ERP.Printing;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Drawing.Imaging;
+using QRCoder;
 
 namespace _4_06_EF_ERP.ViewModel
 {
@@ -102,6 +106,8 @@ namespace _4_06_EF_ERP.ViewModel
 
                 var invoicePrintData = new InvoicePrintData();
                 invoicePrintData.Invoice = SelectedInvoice;
+                invoicePrintData.BarCode = this.CreateBarCode("12345");
+                invoicePrintData.QrCode = this.CreateQrCode("12345");
                 document.DataContext = invoicePrintData;
 
                 PrintDialog printDialog = new PrintDialog();
@@ -120,6 +126,40 @@ namespace _4_06_EF_ERP.ViewModel
 
             FlowDocument flowDocument = XamlReader.Load(new XmlTextReader(new StringReader(rawDocument))) as FlowDocument;
             return flowDocument;
+        }
+
+        private BitmapSource CreateBarCode(string toCode)
+        {
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            System.Drawing.Image img = b.Encode(BarcodeLib.TYPE.CODE93, toCode, Color.Black, Color.White, 100, 50);
+
+            using (var memory = new MemoryStream())
+            {
+                img.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
+        }
+
+        private BitmapSource CreateQrCode(string toCode)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(toCode, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap result = qrCode.GetGraphic(20);
+
+            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                         result.GetHbitmap(),
+                         IntPtr.Zero,
+                         Int32Rect.Empty,
+                         BitmapSizeOptions.FromEmptyOptions());
         }
 
         public ICommand AddCommand { get; private set; }
