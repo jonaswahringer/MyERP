@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Markup;
+using System.Windows.Media.Imaging;
 using System.Xml;
 
 // get all the data we need for printing
@@ -20,6 +21,8 @@ namespace MyERP.Printing
         public Invoice Invoice { get; set; }
         //optional, weil EagerLoading
         public ICollection<InvoicePosition> Positions { get; set; }
+        public BitmapSource BarCode { get; set; }
+        public BitmapSource QrCode { get; set; }
         #endregion
     }
 }

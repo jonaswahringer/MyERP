@@ -71,4 +71,15 @@
 
     </Grid>
   </Paragraph>
+    <Paragraph>
+        <Image Source="{Binding BarCode}" 
+                   Width="100" 
+                   Height="50" />
+    </Paragraph>
+
+    <Paragraph>
+            <Image Source="{Binding QrCode}" 
+                   Width="100" 
+                   Height="100"/>
+        </Paragraph>
 </FlowDocument>
