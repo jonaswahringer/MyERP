@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:MyERP.View"
         xmlns:src="clr-namespace:MyERP.ViewModel"
         mc:Ignorable="d"
@@ -87,70 +88,96 @@
                 </ribbon:RibbonTab>
             </ribbon:Ribbon>
         </DockPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="Dashboard">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.5*"/>
+                    </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
-                <Label Margin="10">Name</Label>
-                <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
-                <Label Margin="10">Adresse</Label>
-                <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
-                <Label Margin="10">Amount</Label>
-                <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
-                <Label Margin="10">Vat</Label>
-                <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="667,0,0,0" >
-                <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
-                <Button Content="Remove" Command="{Binding Path=RemoveCommand}"></Button>
-            </StackPanel>
-        </Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.6*" />
-                <ColumnDefinition Width="0.4*" />
-            </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Label Margin="10">Name</Label>
+                        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerName}" Width="80" Margin="10"></TextBox>
+                        <Label Margin="10">Adresse</Label>
+                        <TextBox Text="{Binding Path=InvoiceToAdd.CustomerAddress}" Width="80" Margin="10"></TextBox>
+                        <Label Margin="10">Amount</Label>
+                        <TextBox Text="{Binding Path=InvoiceToAdd.Amount}" Width="80" Margin="10"></TextBox>
+                        <Label Margin="10">Vat</Label>
+                        <TextBox Text="{Binding Path=InvoiceToAdd.Vat}" Width="80" Margin="10"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" Margin="667,0,0,0" >
+                        <Button Content="Add" Margin="10" Command="{Binding Path=AddCommand}" Width="46.4933333333333"></Button>
+                        <Button Content="Remove" Command="{Binding Path=RemoveCommand}"></Button>
+                    </StackPanel>
 
-            <StackPanel Grid.Column="0">
-            <ListView ItemsSource="{Binding Path=InvoiceList}" SelectedItem="{Binding Path=SelectedInvoice}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
-                        <GridViewColumn Header="Address" Width="150" DisplayMemberBinding="{Binding Path=CustomerAddress}" />
-                        <GridViewColumn Header="Amount" Width="150" DisplayMemberBinding="{Binding Path=Amount}" />
-                        <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Path=InvoiceDate}" />
-                        <GridViewColumn Header="Vat" Width="150" DisplayMemberBinding="{Binding Path=Vat}" />
-                    </GridView>
-                </ListView.View>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
-        </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <ListView ItemsSource="{Binding Path=InvoiceList}" SelectedItem="{Binding Path=SelectedInvoice}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
+                                    <GridViewColumn Header="Address" Width="150" DisplayMemberBinding="{Binding Path=CustomerAddress}" />
+                                    <GridViewColumn Header="Amount" Width="150" DisplayMemberBinding="{Binding Path=Amount}" />
+                                    <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Path=InvoiceDate}" />
+                                    <GridViewColumn Header="Vat" Width="150" DisplayMemberBinding="{Binding Path=Vat}" />
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                    </StackPanel>
 
-        <StackPanel Grid.Column="1">
-            <ListView ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
-                        <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
-                        <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
-                    </GridView>
-                </ListView.View>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
-        </StackPanel>
-    </Grid>
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <ListView ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
+                                    <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
+                                    <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <!-- LineChart -->
+                        <!--
+                <lvc:CartesianChart Series="{Binding SeriesCollectionInvoiceAmount}" LegendLocation="Right" Grid.Row="0" Grid.Column="1">
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Betrag der Rechnung" LabelFormatter="{Binding YFormatterInvoiceAmount}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Rechnungsdatum" LabelFormatter="{Binding XFormatterInvoiceAmount}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+                 -->
+                        <!-- PieChart-->
+
+                        <lvc:PieChart Name="Chart" Grid.Row="1" Series="{Binding SeriesAmountInvoicePosition}" 
+                    LegendLocation="Right" InnerRadius="100">
+                        </lvc:PieChart>
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="BubbleChart">
+                <TextBlock Text="Test" />
+                <lvc:CartesianChart Grid.Row="1" Series="{Binding }">
+                </lvc:CartesianChart>
+            </TabItem>
+        </TabControl>
+        
     </StackPanel>
 </Window>

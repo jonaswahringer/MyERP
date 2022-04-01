@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MyERP.Context;
 using MyERP.Model;
@@ -21,6 +18,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using QRCoder;
 using System.Windows;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace MyERP.ViewModel
 {
@@ -50,6 +50,67 @@ namespace MyERP.ViewModel
             {
                 selectedInvoice = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        public SeriesCollection SeriesCollectionInvoiceAmount
+        {
+            get
+            {
+                //DB Zugriff
+                using (var context = new InvoiceContext())
+                {
+                    var invoices = context.Invoices.OrderBy(i => i.InvoiceDate);
+
+                    var seriesCollection = new SeriesCollection();
+
+                    var lineSeries = new LineSeries
+                    {
+                        Title = "Rechnungsverlauf",
+                        Values = new ChartValues<DateTimePoint>(),
+                    };
+
+                    foreach (var invoice in invoices)
+                    {
+                        lineSeries.Values.Add(new DateTimePoint
+                        {
+                            DateTime = invoice.InvoiceDate,
+                            Value = invoice.Amount
+                        });
+                    }
+                    seriesCollection.Add(lineSeries);
+                    return seriesCollection;
+                }
+            }
+        }
+        public string[] LabelsInvoiceAmount { get; set; }
+        public Func<double, string> YFormatterInvoiceAmount { get; set; }
+        public Func<double, string> XFormatterInvoiceAmount { get; set; }
+
+        public SeriesCollection SeriesAmountInvoicePosition
+        {
+            get
+            {
+                Func<ChartPoint, string> labelPoint = chartPoint => $"{chartPoint.Y} ({chartPoint.Participation:P})";
+
+                var SeriesCollection = new SeriesCollection();
+
+                if (SelectedInvoice != null)
+                {
+                    foreach (var position in SelectedInvoice.Positions)
+                    {
+                        SeriesCollection.Add(new PieSeries
+                        {
+                            Title = position.ItemNr.ToString(),
+                            Values = new ChartValues<double> { position.Qty },
+                            PushOut = position.Id == 1 ? 10 : 0,
+                            DataLabels = true,
+                            LabelPoint = labelPoint
+                        });
+                    }
+                }
+
+                return SeriesCollection;
             }
         }
 
@@ -89,6 +150,9 @@ namespace MyERP.ViewModel
                 PrintDialog printDialog = new PrintDialog();
                 if (printDialog.ShowDialog() == true)
                     printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
+
+                YFormatterInvoiceAmount = value => value.ToString("C");
+                XFormatterInvoiceAmount = value => new DateTime((long)value).ToString("dd.MM.yyyy");
             }, c => SelectedInvoice != null);
         }
         #endregion

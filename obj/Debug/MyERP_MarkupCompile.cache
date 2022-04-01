@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\dev\MyERP\obj\Debug\
+Z:\SEW4\MyERP\obj\Debug\
 MyERP
 none
 false
 DEBUG;TRACE
-D:\dev\MyERP\App.xaml
-2446489940
-22043716014
-13-1387628800
-32-1818647082
+Z:\SEW4\MyERP\App.xaml
+2-2048984848
+2-382535984
+13194863062
+35883430324
 MainWindow.xaml;View\InvoiceView.xaml;
 
 False
