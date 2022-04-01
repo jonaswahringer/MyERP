@@ -58,6 +58,7 @@ namespace _4_06_EF_ERP.ViewModel
             set
             {
                 selectedInvoice = value;
+                RaisePropertyChanged(nameof(SeriesAmountInvoicePosition));
                 RaisePropertyChanged();
             }
         }
@@ -106,6 +107,32 @@ namespace _4_06_EF_ERP.ViewModel
         }
         public string[] LabelsInvoiceAmount { get; set; }
         public Func<double, string> YFormatterInvoiceAmount { get; set; }
+        public Func<double, string> XFormatterInvoiceAmount { get; set; }
+
+        public SeriesCollection SeriesAmountInvoicePosition
+        {
+            get
+            {
+                Func<ChartPoint, string> labelPoint = chartPoint => $"{chartPoint.Y}({chartPoint.Participation:P})";
+                var seriesCollection = new SeriesCollection();
+
+                if (SelectedInvoice != null)
+                {
+                    foreach (var position in SelectedInvoice.Positions)
+                    {
+                        seriesCollection.Add(new PieSeries
+                        {
+                            Title = position.ItemNr.ToString(),
+                            Values = new ChartValues<double> { position.Qty },
+                            PushOut = position.Id == 1 ? 10 : 0,
+                            DataLabels = true,
+                            LabelPoint = labelPoint
+                        });
+                    }
+                }
+                return seriesCollection;
+            }
+        }
 
         public ERPViewModel()
         {
@@ -114,11 +141,8 @@ namespace _4_06_EF_ERP.ViewModel
             {
                 InvoiceToAdd.InvoiceDate = DateTime.Now;
                 InvoiceLogic.AddInvoice(InvoiceToAdd);
-                foreach (var invoice in Invoices)
-                {
-                    Trace.WriteLine(invoice.Vat);
-                }
                 RaisePropertyChanged(nameof(Invoices));
+                RaisePropertyChanged(nameof(SeriesCollectionInvoiceAmount));
             }, c => true);
 
             RemoveCommand = new RelayCommand(e =>
@@ -130,6 +154,7 @@ namespace _4_06_EF_ERP.ViewModel
                     case MessageBoxResult.Yes:
                         InvoiceLogic.RemoveInvoice(SelectedInvoice);
                         RaisePropertyChanged(nameof(Invoices));
+                        RaisePropertyChanged(nameof(SeriesCollectionInvoiceAmount));
                         break;
                     case MessageBoxResult.No:
                         break;
@@ -150,6 +175,9 @@ namespace _4_06_EF_ERP.ViewModel
                 if (printDialog.ShowDialog() == true)
                     printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
             }, c => true);
+
+            YFormatterInvoiceAmount = value => value.ToString("C");
+            XFormatterInvoiceAmount = value => new DateTime((long)value).ToString("dd.MM.yyyy");
         }
 
         private static FlowDocument getFlowDocument(String path)

@@ -78,83 +78,69 @@
                 </ribbon:RibbonGroup>
             </ribbon:RibbonTab>
         </ribbon:Ribbon>
-
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"></RowDefinition>
-                <RowDefinition Height="0.5*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+            <TabControl>
+                <TabItem Header="General">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"></RowDefinition>
+                            <RowDefinition Height="0.5*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
 
-            <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
-                    <GridViewColumn Header="Address" Width="150" DisplayMemberBinding="{Binding Path=CustomerAddress}" />
-                    <GridViewColumn Header="Amount" Width="150" DisplayMemberBinding="{Binding Path=Amount}" />
-                    <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Path=InvoiceDate}" />
-                    <GridViewColumn Header="Vat" Width="150" DisplayMemberBinding="{Binding Path=Vat}" />
-                </GridView>
-            </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
+                        <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Invoices}" SelectedItem="{Binding Path=SelectedInvoice}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Path=CustomerName}" />
+                                    <GridViewColumn Header="Address" Width="150" DisplayMemberBinding="{Binding Path=CustomerAddress}" />
+                                    <GridViewColumn Header="Amount" Width="150" DisplayMemberBinding="{Binding Path=Amount}" />
+                                    <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Path=InvoiceDate}" />
+                                    <GridViewColumn Header="Vat" Width="150" DisplayMemberBinding="{Binding Path=Vat}" />
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
 
-            <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
-                        <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
-                        <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
-                    </GridView>
-                </ListView.View>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
+                        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />
+                                    <GridViewColumn Header="Price" Width="150" DisplayMemberBinding="{Binding Path=Price}" />
+                                    <GridViewColumn Header="Qty" Width="150" DisplayMemberBinding="{Binding Path=Qty}" />
+                                </GridView>
+                            </ListView.View>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
 
-            <lvc:CartesianChart Series="{Binding SeriesCollectionInvoiceAmount}" LegendLocation="Right" Grid.Row="0" Grid.Column="1">
-                <lvc:CartesianChart.Resources>
-                    <Style TargetType="lvc:DefaultTooltip">
-                        <Setter Property="Background" Value="Black"></Setter>
-                        <Setter Property="Foreground" Value="White"></Setter>
-                        <Setter Property="ShowTitle" Value="False"></Setter>
-                        <Setter Property="ShowSeries" Value="False"></Setter>
-                        <Setter Property="FontSize" Value="32"></Setter>
-                        <Setter Property="FontWeight" Value="Bold"></Setter>
-                    </Style>
-                </lvc:CartesianChart.Resources>
-                <lvc:CartesianChart.DataTooltip>
-                    <lvc:DefaultTooltip SelectionMode="OnlySender" />
-                </lvc:CartesianChart.DataTooltip>
-                <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Sales/Y-ACHSE" LabelFormatter="{Binding YFormatterInvoiceAmount}"></lvc:Axis>
-                </lvc:CartesianChart.AxisY>
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Month/X-ACHSE" Labels="{Binding LabelsInvoiceAmount}"></lvc:Axis>
-                </lvc:CartesianChart.AxisX>
-            </lvc:CartesianChart>
+                        <lvc:CartesianChart Series="{Binding SeriesCollectionInvoiceAmount}" LegendLocation="Right" Grid.Row="0" Grid.Column="1">
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Betrag der Rechnung" LabelFormatter="{Binding YFormatterInvoiceAmount}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Rechnungsdatum" LabelFormatter="{Binding XFormatterInvoiceAmount}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                        </lvc:CartesianChart>
 
-            <!--<lvc:PieChart Grid.Row="1" Grid.Column="1" LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
-                <lvc:PieChart.Series>
-                    <lvc:PieSeries Title="Maria" Values="3" DataLabels="True"
-                               LabelPoint="{Binding PointLabel}"/>
-                    <lvc:PieSeries Title="Charles" Values="4" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                    <lvc:PieSeries Title="Frida" Values="6" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                    <lvc:PieSeries Title="Frederic" Values="2" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                </lvc:PieChart.Series>
-            </lvc:PieChart>-->
+                        <lvc:PieChart Series="{Binding SeriesAmountInvoicePosition}" Grid.Row="1" Grid.Column="1" LegendLocation="Bottom">
+                        </lvc:PieChart>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Bubble Chart">
+                    
+                </TabItem>
+            </TabControl>
 
         </Grid>
     </DockPanel>

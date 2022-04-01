@@ -34,20 +34,20 @@
     </Paragraph>
 
     <BlockUIContainer>
-    <ListView ItemsSource="{Binding Path=Invoice.Positions}">
-        <ListView.View>
+        <ListView ItemsSource="{Binding Path=Invoice.Positions}">
+            <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Pos" Width="Auto" DisplayMemberBinding="{Binding Path=ItemNr}" />
                     <GridViewColumn Header="Einzelpreis" Width="Auto" DisplayMemberBinding="{Binding Path=Price}" />
                     <GridViewColumn Header="Menge" Width="Auto" DisplayMemberBinding="{Binding Path=Qty}" />
                 </GridView>
             </ListView.View>
-        <ListView.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
-            </ContextMenu>
-        </ListView.ContextMenu>
-    </ListView>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
     </BlockUIContainer>
 
     <BlockUIContainer>

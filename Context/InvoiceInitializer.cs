@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _4_06_EF_ERP.Context
 {
-    class InvoiceInitializer : DropCreateDatabaseAlways<InvoiceContext>
+    class InvoiceInitializer : DropCreateDatabaseIfModelChanges<InvoiceContext>
     {
         protected override void Seed(InvoiceContext context)
         {
@@ -38,7 +38,7 @@ namespace _4_06_EF_ERP.Context
             defaults.Add(new Invoice
             {
                 CustomerName = "HTL",
-                Amount = 100,
+                Amount = 587,
                 CustomerAddress = "Ybbs",
                 InvoiceDate = new DateTime(2020, 01, 25),
                 Vat = 20,
