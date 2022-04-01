@@ -23,6 +23,9 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.Drawing.Imaging;
 using QRCoder;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace _4_06_EF_ERP.ViewModel
 {
@@ -70,6 +73,39 @@ namespace _4_06_EF_ERP.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        public SeriesCollection SeriesCollectionInvoiceAmount
+        {
+            get
+            {
+                //DB Zugriff
+                using (var context = new InvoiceContext())
+                {
+                    var invoices = context.Invoices.OrderBy(i => i.InvoiceDate);
+
+                    var seriesCollection = new SeriesCollection();
+
+                    var lineSeries = new LineSeries
+                    {
+                        Title = "Rechnungsverlauf",
+                        Values = new ChartValues<DateTimePoint>(),
+                    };
+
+                    foreach (var invoice in invoices)
+                    {
+                        lineSeries.Values.Add(new DateTimePoint
+                        {
+                            DateTime = invoice.InvoiceDate,
+                            Value = invoice.Amount
+                        });
+                    }
+                    seriesCollection.Add(lineSeries);
+                    return seriesCollection;
+                }
+            }
+        }
+        public string[] LabelsInvoiceAmount { get; set; }
+        public Func<double, string> YFormatterInvoiceAmount { get; set; }
 
         public ERPViewModel()
         {
