@@ -138,7 +138,8 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Bubble Chart">
-                    
+                    <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollectionBubbleChart}">
+                    </lvc:CartesianChart>
                 </TabItem>
             </TabControl>
 
