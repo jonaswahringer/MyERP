@@ -15,7 +15,6 @@
     </Window.DataContext>
 
     <DockPanel>
-
         <ribbon:Ribbon DockPanel.Dock="Top">
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="/Images/help-circle.png" />
@@ -139,10 +138,15 @@
                 </TabItem>
                 <TabItem Header="Bubble Chart">
                     <lvc:CartesianChart Grid.Row="1" Series="{Binding SeriesCollectionBubbleChart}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Rechnungsdatum" LabelFormatter="{Binding XFormatterInvoiceAmount}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Betrag der Rechnung" LabelFormatter="{Binding YFormatterInvoiceAmount}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
                     </lvc:CartesianChart>
                 </TabItem>
             </TabControl>
-
         </Grid>
     </DockPanel>
 </Window>

@@ -26,6 +26,7 @@ using QRCoder;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
+using LiveCharts.Configurations;
 
 namespace _4_06_EF_ERP.ViewModel
 {
@@ -134,42 +135,45 @@ namespace _4_06_EF_ERP.ViewModel
             }
         }
 
-        public SeriesCollection SeriesCollectionBubbleChart { get; set; }
+        public SeriesCollection SeriesCollectionBubbleChart
+        {
+            get
+            {
+                using (var context = new InvoiceContext())
+                {
+                    List<BubbleChartData> bubbleChartData = new List<BubbleChartData>();
+
+                    foreach(var invoice in Invoices)
+                    {
+                        bubbleChartData.Add(new BubbleChartData
+                        {
+                            InvoiceDate = invoice.InvoiceDate,
+                            Amount = invoice.Amount,
+                            AmountOfPosition = invoice.Positions.Count
+                        });
+                    }
+
+                    var seriesCollection = new SeriesCollection()
+                    {
+                        new ScatterSeries
+                        {
+                            Values = new ChartValues<BubbleChartData>(bubbleChartData),
+                            Configuration = Mappers.Weighted<BubbleChartData>()
+                            .X(i => i.InvoiceDate.Ticks)
+                            .Y(i => i.Amount)
+                            .Weight(i => i.AmountOfPosition)
+                        }
+                    };
+                    
+                    return seriesCollection;
+                }
+            }
+        }
+
 
 
         public ERPViewModel()
-        {
-
-            SeriesCollectionBubbleChart = new SeriesCollection
-            {
-                new ScatterSeries
-                {
-                    Values = new ChartValues<ScatterPoint>
-                    {
-                        new ScatterPoint(5, 5, 20),
-                        new ScatterPoint(3, 4, 80),
-                        new ScatterPoint(7, 2, 20),
-                        new ScatterPoint(2, 6, 60),
-                        new ScatterPoint(8, 2, 70)
-                    },
-                    MinPointShapeDiameter = 15,
-                    MaxPointShapeDiameter = 45
-                },
-                new ScatterSeries
-                {
-                    Values = new ChartValues<ScatterPoint>
-                    {
-                        new ScatterPoint(7, 5, 1),
-                        new ScatterPoint(2, 2, 1),
-                        new ScatterPoint(1, 1, 1),
-                        new ScatterPoint(6, 3, 1),
-                        new ScatterPoint(8, 8, 1)
-                    },
-                    PointGeometry = DefaultGeometries.Triangle,
-                    MinPointShapeDiameter = 15,
-                    MaxPointShapeDiameter = 45
-                }
-            };
+        { 
 
             AddCommand = new RelayCommand(e =>
             {

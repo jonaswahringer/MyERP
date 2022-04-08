@@ -112,6 +112,7 @@
     </ApplicationDefinition>
     <Compile Include="Context\InvoiceInitializer.cs" />
     <Compile Include="Logic\InvoiceLogic.cs" />
+    <Compile Include="Model\BubbleChartData.cs" />
     <Compile Include="Model\Position.cs" />
     <Compile Include="Printing\InvoicePrintData.cs" />
     <Compile Include="ViewModel\ERPViewModel.cs" />
