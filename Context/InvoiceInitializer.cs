@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _4_06_EF_ERP.Context
 {
-    class InvoiceInitializer : DropCreateDatabaseIfModelChanges<InvoiceContext>
+    class InvoiceInitializer : DropCreateDatabaseAlways<InvoiceContext>
     {
         protected override void Seed(InvoiceContext context)
         {
@@ -17,30 +17,30 @@ namespace _4_06_EF_ERP.Context
             defaultPositions.Add(new Position
             {
                 ItemNr = 0,
-                Price = 200,
-                Qty = 20
+                Price = 100,
+                Qty = 1
             });
 
             defaultPositions.Add(new Position
             {
                 ItemNr = 1,
-                Price = 100,
+                Price = 200,
                 Qty = 10
             });
 
             defaultPositions.Add(new Position
             {
                 ItemNr = 2,
-                Price = 70,
-                Qty = 15
+                Price = 300,
+                Qty = 100
             });
 
             defaults.Add(new Invoice
             {
-                CustomerName = "HTL",
+                CustomerName = "Andi Arbeit",
                 Amount = 587,
-                CustomerAddress = "Ybbs",
-                InvoiceDate = new DateTime(2020, 01, 25),
+                CustomerAddress = "Andi Arbeit Straße 1",
+                InvoiceDate = new DateTime(2020, 01, 01),
                 Vat = 20,
                 //Positions = defaultPositions
             });
@@ -50,10 +50,10 @@ namespace _4_06_EF_ERP.Context
 
             defaults.Add(new Invoice
             {
-                CustomerName = "HAK",
+                CustomerName = "Mike Rhosoft",
                 Amount = 200,
-                CustomerAddress = "Ybbs",
-                InvoiceDate = new DateTime(2020, 01, 15),
+                CustomerAddress = "Mike Rhosoft Straße 2",
+                InvoiceDate = new DateTime(2020, 01, 02),
                 Vat = 20,
                 //Positions = defaultPositions
             });
@@ -61,10 +61,10 @@ namespace _4_06_EF_ERP.Context
 
             defaults.Add(new Invoice
             {
-                CustomerName = "HAS",
+                CustomerName = "Sue Permarkt",
                 Amount = 300,
-                CustomerAddress = "Ybbs",
-                InvoiceDate = new DateTime(2020, 01, 10),
+                CustomerAddress = "Sue Permarkt Straße 3",
+                InvoiceDate = new DateTime(2020, 01, 03),
                 Vat = 20,
                 //Positions = defaultPositions
             });
@@ -73,19 +73,19 @@ namespace _4_06_EF_ERP.Context
 
             defaults.Add(new Invoice
             {
-                CustomerName = "Mittelschule",
+                CustomerName = "Externer Außerirdischer",
                 Amount = 400,
-                CustomerAddress = "Ybbs",
-                InvoiceDate = new DateTime(2020, 01, 05),
+                CustomerAddress = "Außerirdische Straße 4",
+                InvoiceDate = new DateTime(2020, 01, 04),
                 Vat = 20
             });
 
             defaults.Add(new Invoice
             {
-                CustomerName = "Volksschule",
+                CustomerName = "Jürgen Kühnl",
                 Amount = 500,
-                CustomerAddress = "Ybbs",
-                InvoiceDate = new DateTime(2020, 01, 01),
+                CustomerAddress = "Jürgen Kühnl Straße 5",
+                InvoiceDate = new DateTime(2020, 01, 05),
                 Vat = 20
             });
 
