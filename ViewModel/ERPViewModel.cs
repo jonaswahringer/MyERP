@@ -27,6 +27,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
 using LiveCharts.Configurations;
+using _4_06_EF_ERP.MQTT;
 
 namespace _4_06_EF_ERP.ViewModel
 {
@@ -173,7 +174,9 @@ namespace _4_06_EF_ERP.ViewModel
 
 
         public ERPViewModel()
-        { 
+        {
+            MqttClient mqttClient = new MqttClient();
+            mqttClient.Init();
 
             AddCommand = new RelayCommand(e =>
             {
@@ -213,6 +216,29 @@ namespace _4_06_EF_ERP.ViewModel
                 if (printDialog.ShowDialog() == true)
                     printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
             }, c => true);
+
+            RechnungsFreigabeCommand = new RelayCommand(async e =>
+            {
+                // client.sendInvoice(invoiceSelected)
+                if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                {
+                    // "ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN" _> MessageBox
+                };
+
+                // if(SelectedPositions.Count==1) -> nur ausgewählte  
+            }, c => SelectedInvoice != null);
+
+            PositionsFreigabeCommand = new RelayCommand(async e =>
+            {
+                // client.sendInvoice(invoiceSelected)
+                if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                {
+                    // "ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN" _> MessageBox
+                };
+
+                // if(SelectedPositions.Count==1) -> nur ausgewählte  
+            }, c => SelectedPositions.Count>0);
+            
 
             YFormatterInvoiceAmount = value => value.ToString("C");
             XFormatterInvoiceAmount = value => new DateTime((long)value).ToString("dd.MM.yyyy");
@@ -267,6 +293,7 @@ namespace _4_06_EF_ERP.ViewModel
         public ICommand AddCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
         public ICommand PrintCommand { get; private set; }
+        public ICommand FreigabeCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([CallerMemberName] String propertyName = "")

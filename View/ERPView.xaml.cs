@@ -24,12 +24,12 @@ namespace _4_06_EF_ERP.View
         {
             InitializeComponent();
         }
-
+        /*
         public void OpenAddDialog(object sender, RoutedEventArgs e)
         {
             AddDialog addDialog = new AddDialog();
             addDialog.Show();
-        }
+        }*/
 
         public void selectionChanged(object sender, SelectionChangedEventArgs e)
         {

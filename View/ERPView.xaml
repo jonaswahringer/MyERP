@@ -102,6 +102,8 @@
                             </ListView.View>
                             <ListView.ContextMenu>
                                 <ContextMenu>
+                                    <MenuItem Header="Freiegeben" Command="{Binding Path=FreigabeCommand}" />
+                                    <MenuItem Header="Freiegeben" Command="{Binding Path=PrintCommand}" />
                                     <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -117,7 +119,8 @@
                             </ListView.View>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
+                                    <MenuItem Header="Freiegeben" Command="{Binding Path=FreigabeCommand}" />
+                                    <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
