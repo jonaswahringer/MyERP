@@ -239,7 +239,7 @@ namespace _4_06_EF_ERP.ViewModel
                 else if (SelectedInvoice != null)
                 {
                     Console.WriteLine("SENDING INVOICE ...");
-                    if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                    if (await mqttClient.SendInvoiceJson(SelectedInvoice) == false)
                     {
                         showMessageBox();
                     };

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using _4_06_EF_ERP.Model;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace _4_06_EF_ERP.MQTT
 {
@@ -57,28 +58,50 @@ namespace _4_06_EF_ERP.MQTT
             }
         }
 
-        public async Task<bool> SendInvoice(Invoice invoice)
+        public Task<bool> SendInvoiceJson(Invoice invoice)
         {
-            Console.WriteLine("SEND INVOICE");
-            if(mqttClient.IsConnected)
-            {
+            // JSON konvertieren
+            string json = JsonConvert.SerializeObject(invoice);
 
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic("invoice/rechnung")
-                    .WithPayload(invoice.ToString())
+            //via MQTT senden
+            return SendInvoice(json);
+        }
+
+        public Task<bool> SendInvoiceString(Invoice invoice)
+        {
+            // string konvertieren
+            string payload = invoice.ToString();
+
+            // via MQTT senden
+            return SendInvoice(payload);
+        }
+
+        private async Task<bool> SendInvoice(string payload)
+        {
+            //isConnected
+            if (mqttClient.IsConnected)
+            {
+                try
+                {
+                    // message erzeugen
+                    var message = new MqttApplicationMessageBuilder()
+                    .WithTopic("invoice/position")
+                    .WithPayload(payload)
                     .WithExactlyOnceQoS()
                     .WithRetainFlag()
                     .Build();
 
-                await Task.Run(() => mqttClient.PublishAsync(message, CancellationToken.None));
+                    // message senden
+                    await Task.Run(() => mqttClient.PublishAsync(message, CancellationToken.None));
 
-                foreach (Position pos in invoice.Positions)
+                    return true;
+                } 
+                catch(Exception ex)
                 {
-                    await SendInvoicePosition(pos);
+                    Console.WriteLine(ex.ToString());
+                    return false;
                 }
-                return true;
             }
-            
             return false;
         }
 
