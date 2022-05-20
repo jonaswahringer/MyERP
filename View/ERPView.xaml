@@ -102,14 +102,14 @@
                             </ListView.View>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Freiegeben" Command="{Binding Path=FreigabeCommand}" />
-                                    <MenuItem Header="Freiegeben" Command="{Binding Path=PrintCommand}" />
+                                    <MenuItem Header="Freigeben" Command="{Binding Path=FreigabeCommand}" />
+                                    <MenuItem Header="Drucken" Command="{Binding Path=PrintCommand}" />
                                     <MenuItem Header="Remove" Command="{Binding Path=RemoveCommand}"></MenuItem>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
 
-                        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Multiple" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
+                        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Path=SelectedInvoice.Positions}" SelectionMode="Extended" SelectedItem="SelectedPositions" SelectionChanged="selectionChanged">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="ItemNr" Width="150" DisplayMemberBinding="{Binding Path=ItemNr}" />

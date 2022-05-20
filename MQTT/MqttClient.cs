@@ -9,6 +9,7 @@ using MQTTnet.Client.Options;
 using System.Text;
 using System.Threading;
 using _4_06_EF_ERP.Model;
+using System.Windows;
 
 namespace _4_06_EF_ERP.MQTT
 {
@@ -16,20 +17,23 @@ namespace _4_06_EF_ERP.MQTT
     {
         private IMqttFactory factory = new MqttFactory();
         private IMqttClient mqttClient;
+        public string ClientId { get; set; }
+        public string ServerURL { get; set; }
+        public int Port { get; set; }
+
         public async void Init()
         {
             mqttClient = factory.CreateMqttClient();
             var options = new MqttClientOptionsBuilder()
-            .WithClientId("Client1")
-            .WithTcpServer("localhost")
+            .WithClientId(ClientId)
+            .WithTcpServer(ServerURL)
             .WithCleanSession()
             .Build();
 
             mqttClient.UseApplicationMessageReceivedHandler(e =>
             {
                 Console.WriteLine($"{DateTime.Now} " + $"Topic={e.ApplicationMessage.Topic}; " + $"Message={Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}; " + $"QoS={e.ApplicationMessage.QualityOfServiceLevel}");
-            
-                Task.Run(() => mqttClient.PublishAsync("daheim/hmi/update", "refresh"));
+                // Task.Run(() => mqttClient.PublishAsync("daheim/hmi/update", "refresh"));
             });
 
             mqttClient.UseConnectedHandler(async e =>
@@ -40,11 +44,22 @@ namespace _4_06_EF_ERP.MQTT
                 await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("invoice/position").Build());
                 Console.WriteLine("### SUBSCRIBED ###");
              });
-               await mqttClient.ConnectAsync(options, CancellationToken.None);
+
+            try
+            {
+                await mqttClient.ConnectAsync(options, CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxResult messageBoxResult =
+                    MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN!", "MQTT", MessageBoxButton.OK);
+                Console.WriteLine(ex.ToString());
+            }
         }
 
-        async public Task<bool> SendInvoice(Invoice invoice)
+        public async Task<bool> SendInvoice(Invoice invoice)
         {
+            Console.WriteLine("SEND INVOICE");
             if(mqttClient.IsConnected)
             {
 
@@ -67,9 +82,10 @@ namespace _4_06_EF_ERP.MQTT
             return false;
         }
 
-        async public Task<bool> SendInvoicePosition(Position position)
+        public async Task<bool> SendInvoicePosition(Position position)
         {
-            if(mqttClient.IsConnected)
+            Console.WriteLine("SEND POSITION");
+            if (mqttClient.IsConnected)
             {
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic("invoice/position")

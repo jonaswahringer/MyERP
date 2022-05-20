@@ -67,6 +67,9 @@ namespace _4_06_EF_ERP.ViewModel
 
         public List<Position> SelectedPositions { get; set; } = new List<Position>();
         public int selectedPositionsSum = 0;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public int SelectedPositionsSum
         {
             get => selectedPositionsSum;
@@ -176,6 +179,8 @@ namespace _4_06_EF_ERP.ViewModel
         public ERPViewModel()
         {
             MqttClient mqttClient = new MqttClient();
+            mqttClient.ClientId = "CoolerClient";
+            mqttClient.ServerURL = "localhost";
             mqttClient.Init();
 
             AddCommand = new RelayCommand(e =>
@@ -217,31 +222,38 @@ namespace _4_06_EF_ERP.ViewModel
                     printDialog.PrintDocument((document as IDocumentPaginatorSource).DocumentPaginator, "Invoice");
             }, c => true);
 
-            RechnungsFreigabeCommand = new RelayCommand(async e =>
+            FreigabeCommand = new RelayCommand(async e =>
             {
-                // client.sendInvoice(invoiceSelected)
-                if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                Console.WriteLine("POSITION COUNT: {0}", SelectedPositions.Count);
+                if (SelectedPositions.Count > 0)
                 {
-                    // "ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN" _> MessageBox
-                };
-
-                // if(SelectedPositions.Count==1) -> nur ausgewählte  
-            }, c => SelectedInvoice != null);
-
-            PositionsFreigabeCommand = new RelayCommand(async e =>
-            {
-                // client.sendInvoice(invoiceSelected)
-                if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                    Console.WriteLine("SENDING POSITIONS ...");
+                    foreach (var position in SelectedPositions)
+                    {
+                        if (await mqttClient.SendInvoicePosition(position) == false)
+                        {
+                            showMessageBox();
+                        };
+                    }
+                }
+                else if (SelectedInvoice != null)
                 {
-                    // "ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN" _> MessageBox
-                };
-
-                // if(SelectedPositions.Count==1) -> nur ausgewählte  
-            }, c => SelectedPositions.Count>0);
-            
+                    Console.WriteLine("SENDING INVOICE ...");
+                    if (await mqttClient.SendInvoice(SelectedInvoice) == false)
+                    {
+                        showMessageBox();
+                    };
+                }
+            }, c => SelectedInvoice != null || SelectedPositions.Count>0);
 
             YFormatterInvoiceAmount = value => value.ToString("C");
             XFormatterInvoiceAmount = value => new DateTime((long)value).ToString("dd.MM.yyyy");
+        }
+
+        private static void showMessageBox()
+        {
+            MessageBoxResult messageBoxResult =
+                MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN!", "MQTT", MessageBoxButton.OK);
         }
 
         private static FlowDocument getFlowDocument(String path)
@@ -295,7 +307,6 @@ namespace _4_06_EF_ERP.ViewModel
         public ICommand PrintCommand { get; private set; }
         public ICommand FreigabeCommand { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
