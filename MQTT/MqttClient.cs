@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
-using System.Text;
 using System.Threading;
 using _4_06_EF_ERP.Model;
 using System.Windows;
@@ -53,18 +52,63 @@ namespace _4_06_EF_ERP.MQTT
             catch (Exception ex)
             {
                 MessageBoxResult messageBoxResult =
-                    MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN!", "MQTT", MessageBoxButton.OK);
+                    MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT INITIIERT WERDEN!", "MQTT", MessageBoxButton.OK);
                 Console.WriteLine(ex.ToString());
             }
         }
 
-        public Task<bool> SendInvoiceJson(Invoice invoice)
+        public bool SendInvoiceJson(Invoice invoice)
         {
             // JSON konvertieren
-            string json = JsonConvert.SerializeObject(invoice);
+            string json = convertToJson(invoice);
 
             //via MQTT senden
-            return SendInvoice(json);
+            Console.WriteLine(SendMessage(json, "topic/rechnung").Result.ToString());
+            Console.WriteLine("MESSAGE SENT");
+            return true;
+
+            if (SendMessage(json, "topic/rechnung").Result  == false)
+            {
+                Console.WriteLine("SEND MESSAGE FALSE");
+                return false;
+            }
+            else
+            {
+                Console.WriteLine("SEND MESSAGE TRUE; SENDING POSITIONS ...");
+                foreach (Position pos in invoice.Positions)
+                {
+                    if (SendInvoicePositionJson(pos) == false)
+                    {
+                        return false;
+                    }
+                }
+                Console.WriteLine("SUCCESS");
+            }
+            return true;
+        }
+
+        private string convertToJson(object objToSerialize)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(objToSerialize, Formatting.Indented,
+                    new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return "Error";
+            }
+        }
+
+        public Task<bool> SendInvoicePositionJson(Position position)
+        {
+            // json konvertieren
+            string json = convertToJson(position);
+            return SendMessage(json, "topic/position");
         }
 
         public Task<bool> SendInvoiceString(Invoice invoice)
@@ -73,10 +117,19 @@ namespace _4_06_EF_ERP.MQTT
             string payload = invoice.ToString();
 
             // via MQTT senden
-            return SendInvoice(payload);
+            return SendMessage(payload, "topic/rechnung");
         }
 
-        private async Task<bool> SendInvoice(string payload)
+        public Task<bool> SendInvoicePositionString(Position position)
+        {
+            // string konvertieren
+            string payload = position.ToString();
+
+            // via MQTT senden
+            return SendMessage(payload, "topic/position");
+        }
+
+        private async Task<bool> SendMessage(string payload, string topic)
         {
             //isConnected
             if (mqttClient.IsConnected)
@@ -85,7 +138,7 @@ namespace _4_06_EF_ERP.MQTT
                 {
                     // message erzeugen
                     var message = new MqttApplicationMessageBuilder()
-                    .WithTopic("invoice/position")
+                    .WithTopic(topic)
                     .WithPayload(payload)
                     .WithExactlyOnceQoS()
                     .WithRetainFlag()
@@ -93,8 +146,6 @@ namespace _4_06_EF_ERP.MQTT
 
                     // message senden
                     await Task.Run(() => mqttClient.PublishAsync(message, CancellationToken.None));
-
-                    return true;
                 } 
                 catch(Exception ex)
                 {
@@ -102,26 +153,7 @@ namespace _4_06_EF_ERP.MQTT
                     return false;
                 }
             }
-            return false;
-        }
-
-        public async Task<bool> SendInvoicePosition(Position position)
-        {
-            Console.WriteLine("SEND POSITION");
-            if (mqttClient.IsConnected)
-            {
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic("invoice/position")
-                    .WithPayload(position.ToString())
-                    .WithExactlyOnceQoS()
-                    .WithRetainFlag()
-                    .Build();
-
-                await Task.Run(() => mqttClient.PublishAsync(message, CancellationToken.None));
-                
-                return true;
-            }
-            return false;
+            return true;
         }
 
     }

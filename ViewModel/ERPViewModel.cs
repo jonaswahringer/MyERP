@@ -230,7 +230,7 @@ namespace _4_06_EF_ERP.ViewModel
                     Console.WriteLine("SENDING POSITIONS ...");
                     foreach (var position in SelectedPositions)
                     {
-                        if (await mqttClient.SendInvoicePosition(position) == false)
+                        if (mqttClient.SendInvoicePositionJson(position) == false)
                         {
                             showMessageBox();
                         };
@@ -239,7 +239,7 @@ namespace _4_06_EF_ERP.ViewModel
                 else if (SelectedInvoice != null)
                 {
                     Console.WriteLine("SENDING INVOICE ...");
-                    if (await mqttClient.SendInvoiceJson(SelectedInvoice) == false)
+                    if (mqttClient.SendInvoiceJson(SelectedInvoice) == false)
                     {
                         showMessageBox();
                     };
@@ -253,7 +253,7 @@ namespace _4_06_EF_ERP.ViewModel
         private static void showMessageBox()
         {
             MessageBoxResult messageBoxResult =
-                MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT HERGESTELLT WERDEN!", "MQTT", MessageBoxButton.OK);
+                MessageBox.Show("MESSAGE KONNTE NICHT GESENDET WERDEN (MQTT VERBINDUNG ABGEBROCHEN)", "MQTT", MessageBoxButton.OK);
         }
 
         private static FlowDocument getFlowDocument(String path)
