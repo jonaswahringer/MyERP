@@ -55,6 +55,10 @@ namespace _4_06_EF_ERP.MQTT
                     MessageBox.Show("ES KONNTE KEINE VERBINDUNG ZU MQTT INITIIERT WERDEN!", "MQTT", MessageBoxButton.OK);
                 Console.WriteLine(ex.ToString());
             }
+
+            await SendMessage("Willkommen Abonnent! Du befindest dich im Rechnungsbereich", "invoice/rechnung", true);
+            await SendMessage("Willkommen Abonnent! Du befindest dich im Positionsbereich", "invoice/position", true);
+
         }
 
         public bool SendInvoiceJson(Invoice invoice)
@@ -63,11 +67,11 @@ namespace _4_06_EF_ERP.MQTT
             string json = convertToJson(invoice);
 
             //via MQTT senden
-            Console.WriteLine(SendMessage(json, "topic/rechnung").Result.ToString());
+            Console.WriteLine(SendMessage(json, "topic/rechnung", false).Result.ToString());
             Console.WriteLine("MESSAGE SENT");
             return true;
 
-            if (SendMessage(json, "topic/rechnung").Result  == false)
+            if (SendMessage(json, "topic/rechnung", false).Result  == false)
             {
                 Console.WriteLine("SEND MESSAGE FALSE");
                 return false;
@@ -77,7 +81,7 @@ namespace _4_06_EF_ERP.MQTT
                 Console.WriteLine("SEND MESSAGE TRUE; SENDING POSITIONS ...");
                 foreach (Position pos in invoice.Positions)
                 {
-                    if (SendInvoicePositionJson(pos) == false)
+                    if (SendInvoicePositionJson(pos).Result == false)
                     {
                         return false;
                     }
@@ -100,7 +104,7 @@ namespace _4_06_EF_ERP.MQTT
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return "Error";
+                return ex.ToString();
             }
         }
 
@@ -108,7 +112,7 @@ namespace _4_06_EF_ERP.MQTT
         {
             // json konvertieren
             string json = convertToJson(position);
-            return SendMessage(json, "topic/position");
+            return SendMessage(json, "topic/position", false);
         }
 
         public Task<bool> SendInvoiceString(Invoice invoice)
@@ -117,7 +121,7 @@ namespace _4_06_EF_ERP.MQTT
             string payload = invoice.ToString();
 
             // via MQTT senden
-            return SendMessage(payload, "topic/rechnung");
+            return SendMessage(payload, "topic/rechnung", false);
         }
 
         public Task<bool> SendInvoicePositionString(Position position)
@@ -126,10 +130,10 @@ namespace _4_06_EF_ERP.MQTT
             string payload = position.ToString();
 
             // via MQTT senden
-            return SendMessage(payload, "topic/position");
+            return SendMessage(payload, "topic/position", false);
         }
 
-        private async Task<bool> SendMessage(string payload, string topic)
+        private async Task<bool> SendMessage(string payload, string topic, bool retainFlag)
         {
             //isConnected
             if (mqttClient.IsConnected)
@@ -141,7 +145,7 @@ namespace _4_06_EF_ERP.MQTT
                     .WithTopic(topic)
                     .WithPayload(payload)
                     .WithExactlyOnceQoS()
-                    .WithRetainFlag()
+                    .WithRetainFlag(retainFlag)
                     .Build();
 
                     // message senden

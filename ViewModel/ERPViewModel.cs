@@ -230,7 +230,7 @@ namespace _4_06_EF_ERP.ViewModel
                     Console.WriteLine("SENDING POSITIONS ...");
                     foreach (var position in SelectedPositions)
                     {
-                        if (mqttClient.SendInvoicePositionJson(position) == false)
+                        if (mqttClient.SendInvoicePositionJson(position).Result == false)
                         {
                             showMessageBox();
                         };
