@@ -17,6 +17,7 @@ namespace _4_06_EF_ERP.Model
         public double Price { get; set; }
 
         public int InvoiceId { get; set; }             // FK der Rechung
+        
         [JsonIgnore]
         public Invoice Invoice { get; set; }     // Referenz auf die Rechnung
     }

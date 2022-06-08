@@ -242,6 +242,10 @@ namespace _4_06_EF_ERP.ViewModel
                     if (mqttClient.SendInvoiceJson(SelectedInvoice) == false)
                     {
                         showMessageBox();
+                    }
+                    else 
+                    {
+                        Console.WriteLine("SENT INVOICE");
                     };
                 }
             }, c => SelectedInvoice != null || SelectedPositions.Count>0);

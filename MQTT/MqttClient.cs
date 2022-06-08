@@ -58,6 +58,7 @@ namespace _4_06_EF_ERP.MQTT
 
             await SendMessage("Willkommen Abonnent! Du befindest dich im Rechnungsbereich", "invoice/rechnung", true);
             await SendMessage("Willkommen Abonnent! Du befindest dich im Positionsbereich", "invoice/position", true);
+            // await SendMessage("Wiederschauen Subscriber", "invoice/rechnung", true);
 
         }
 
@@ -65,15 +66,21 @@ namespace _4_06_EF_ERP.MQTT
         {
             // JSON konvertieren
             string json = convertToJson(invoice);
+            Console.WriteLine(json);
 
             //via MQTT senden
-            Console.WriteLine(SendMessage(json, "topic/rechnung", false).Result.ToString());
+            /*
+            Console.WriteLine(SendMessage(json, "invoice/rechnung", false).Result.ToString());
             Console.WriteLine("MESSAGE SENT");
             return true;
-
-            if (SendMessage(json, "topic/rechnung", false).Result  == false)
+            */
+            
+            var res = SendMessage(json, "invoice/rechnung", false);
+            Console.WriteLine(res.Result.ToString());
+            // bool resultSendInvoice = SendMessage(json, "invoice/rechnung", false).Result;
+            if (res.Result.ToString().Equals("False"))
             {
-                Console.WriteLine("SEND MESSAGE FALSE");
+                Console.WriteLine("SEND INVOICE MESSAGE FALSE");
                 return false;
             }
             else
@@ -81,56 +88,54 @@ namespace _4_06_EF_ERP.MQTT
                 Console.WriteLine("SEND MESSAGE TRUE; SENDING POSITIONS ...");
                 foreach (Position pos in invoice.Positions)
                 {
-                    if (SendInvoicePositionJson(pos).Result == false)
+                    // bool resultSendPosition = SendInvoicePositionJson(pos).Result;
+                    res = SendInvoicePositionJson(pos);
+                    if (res.Result.ToString().Equals("False"))
                     {
+                        Console.WriteLine("SEND POSITION MESSAGE FALSE");
                         return false;
                     }
                 }
-                Console.WriteLine("SUCCESS");
+                Console.WriteLine("SUCCESS, SENT ALL MESSAGES");
             }
             return true;
         }
 
         private string convertToJson(object objToSerialize)
         {
+            Console.WriteLine("CONVERT TO JSON METHOD");
+           
+            string convertedJsonString;
             try
             {
-                return JsonConvert.SerializeObject(objToSerialize, Formatting.Indented,
-                    new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
+                convertedJsonString = JsonConvert.SerializeObject(objToSerialize);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return ex.ToString();
             }
+            Console.WriteLine(convertedJsonString);
+            return convertedJsonString;
         }
 
         public Task<bool> SendInvoicePositionJson(Position position)
         {
             // json konvertieren
             string json = convertToJson(position);
-            return SendMessage(json, "topic/position", false);
+            return SendMessage(json, "invoice/position", false);
         }
 
         public Task<bool> SendInvoiceString(Invoice invoice)
         {
-            // string konvertieren
             string payload = invoice.ToString();
-
-            // via MQTT senden
-            return SendMessage(payload, "topic/rechnung", false);
+            return SendMessage(payload, "invoice/rechnung", false);
         }
 
         public Task<bool> SendInvoicePositionString(Position position)
         {
-            // string konvertieren
             string payload = position.ToString();
-
-            // via MQTT senden
-            return SendMessage(payload, "topic/position", false);
+            return SendMessage(payload, "invoice/position", false);
         }
 
         private async Task<bool> SendMessage(string payload, string topic, bool retainFlag)

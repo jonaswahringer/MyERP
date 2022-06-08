@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:_4_06_EF_ERP.View"
         xmlns:src="clr-namespace:_4_06_EF_ERP.ViewModel"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon" 
+
         mc:Ignorable="d"
         Title="ERPView" Height="800" Width="1200">
 
